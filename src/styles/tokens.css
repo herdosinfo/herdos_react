@@ -1,0 +1,78 @@
+/* ============================================================
+   HERDOS Marketing Site — Design Tokens
+   Brand: HERDOS green system (forest / off-white / harvest gold).
+   NOT the saffron palette — CTAs are forest green per brand.
+   ============================================================ */
+:root {
+  /* Brand greens */
+  --forest:        #0D1F12;  /* deep forest — nav, headings, footer */
+  --green:         #007925;  /* action — CTAs, links, focus */
+  --green-hover:   #006A20;
+  --green-press:   #014C1B;
+  --green-bright:  #39B54A;  /* logo gradient end, accents on dark */
+  --sage-50:       #EAF3EE;  /* soft section bg */
+  --sage-100:      #D7E8DD;  /* card hover, tiles */
+  --sage-200:      #B6D0C0;  /* hairlines on light */
+
+  /* Neutrals */
+  --cream:         #F5F5F5;  /* page bg */
+  --paper:         #FFFFFF;  /* cards */
+  --ink:           #0D1F12;  /* body text */
+  --muted:         #4A5E50;  /* secondary text */
+  --faint:         #7A8C82;  /* tertiary */
+  --border:        rgba(13, 31, 18, 0.10);
+  --border-soft:   rgba(13, 31, 18, 0.06);
+
+  /* Accent + status */
+  --gold:          #FCBD16;  /* badges/pills + big stat numbers */
+  --danger:        #B43A2B;
+  --success:       #0E7A3A;
+
+  /* Gradients (sparingly) */
+  --grad-hero:  linear-gradient(150deg, #0D1F12 0%, #11331C 45%, #0B4A22 100%);
+  --grad-logo:  linear-gradient(135deg, #39B54A 0%, #007925 100%);
+  --grad-logo-dark: linear-gradient(135deg, #D7FFF3 0%, #39B54A 100%);
+
+  /* Typography */
+  --font-display: 'Schibsted Grotesk', system-ui, sans-serif;
+  --font-body:    'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+  --font-mono:    'Space Mono', ui-monospace, monospace;
+
+  /* Shadows — soft, forest-tinted */
+  --sh-sm:  0 2px 8px rgba(13, 31, 18, 0.06);
+  --sh-md:  0 10px 30px rgba(13, 31, 18, 0.08);
+  --sh-lg:  0 22px 55px rgba(13, 31, 18, 0.12);
+  --sh-cta: 0 8px 22px rgba(0, 121, 37, 0.24);
+  --sh-cta-h: 0 12px 30px rgba(0, 121, 37, 0.32);
+
+  /* Radii */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur:  0.42s;
+
+  /* Layout */
+  --maxw: 1440px;
+  --nav-h: 64px;
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+
+  --scroll-progress: 0%;
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --maxw: 1640px;
+    --gutter: 5vw;
+  }
+}
+@media (min-width: 1720px) {
+  :root {
+    --maxw: 1760px;
+  }
+}
+

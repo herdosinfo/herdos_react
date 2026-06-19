@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 297.19 455.82">
+  <defs>
+    
+    <linearGradient id="linear-gradient" x1="47.31" y1="-40.46" x2="203.37" y2="399.52" gradientUnits="userSpaceOnUse">
+      <stop offset=".01" stop-color="#39b54a"></stop>
+      <stop offset=".04" stop-color="#32ae45"></stop>
+      <stop offset=".16" stop-color="#1c9637"></stop>
+      <stop offset=".28" stop-color="#0c862d"></stop>
+      <stop offset=".42" stop-color="#027c26"></stop>
+      <stop offset=".59" stop-color="#007925"></stop>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="214.3" y1="119.24" x2="315" y2="445.19" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#39b54a"></stop>
+      <stop offset=".06" stop-color="#27a23e"></stop>
+      <stop offset=".13" stop-color="#158f33"></stop>
+      <stop offset=".23" stop-color="#09822b"></stop>
+      <stop offset=".35" stop-color="#027b26"></stop>
+      <stop offset=".59" stop-color="#007925"></stop>
+    </linearGradient>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <path class="cls-2" d="m189.64,209.14c-2.05-1.02-4.13-2-6.24-2.95-15.95-7.21-33.55-12.61-52.78-15.82v-96.41c-.81-47.63-71.67-47.64-72.49,0,.4,23.82,18.33,35.73,36.25,35.73v-.2s0,57.48,0,57.48h0c-46.73-.2-93.31-31.35-94.37-93.47,2.11-124.63,187.51-124.65,189.64,0v283.2l-.02-.2c-29.05.34-58.35-18.79-59.01-57.42v-117.49c19.92-3.09,40.81-.41,59.03,8.05v-.47Z"></path>
+      <path class="cls-1" d="m297.18,435.03v-134.5c-12.93-8.63-24.39-17.99-34.44-27.91,0,0-.01-.01-.02-.02-4.55-4.5-8.82-9.11-12.8-13.83-3.74-4.43-7.24-8.95-10.49-13.56-.19-.28-.39-.55-.58-.82v-.72c.25.34.51.69.76,1.03,0,0,0,0,0,0,.12.17.25.33.38.5,3.47,4.56,7.36,8.81,11.58,12.7.11.11.22.21.34.31,0,0,0,0,0,.01,12.74,11.65,28.51,20.11,45.27,24.27v-94.73c-.33-19.23-7.76-33.63-18.72-43.2l.12.28s-.08-.08-.13-.11c-9.62-8.4-21.96-13.08-34.61-14.04-1.67-.13-3.34-.19-5.01-.19v267.87c.13,7.37,1.29,14.02,3.3,19.97h0c7.86,23.27,28.6,35.7,50.22,37.29,1.61.12,3.21.17,4.82.17v-20.79Z"></path>
+    </g>
+  </g>
+</svg>
