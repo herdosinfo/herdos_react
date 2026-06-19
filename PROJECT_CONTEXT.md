@@ -1,0 +1,108 @@
+# Project Overview
+
+* **Project Name**: herdos-react
+* **Purpose**: Premium, dynamic marketing website for HERDOS—a smart herd management system and tracking collar for goats and sheep.
+* **Main Features**:
+  * Interactive hero section with mouse parallax tracking.
+  * Smooth scrolling using Lenis integrated with GSAP ScrollTrigger.
+  * Real-time styled live status ticker.
+  * Side-by-side product comparison matrix.
+  * Interactive ROI (Return on Investment) calculator for livestock farmers.
+  * Responsive layout with customized desktop mega menu and mobile navigation drawer.
+* **Current Development Stage**: Core features, page routing, and design system are implemented. The local development environment is configured, and the codebase is pushed to remote origin.
+
+# Tech Stack
+
+* **Frameworks**: React (v19) scaffolded with Vite (v8)
+* **Libraries**: React Router DOM (v7) for client-side routing
+* **State Management**: React Context (`SiteContext`) for site-wide UI states (mobile menu open/close, active page sections)
+* **Styling**: Vanilla CSS structure styled using TailwindCSS (v4)
+* **Animation Libraries**: 
+  * **GSAP**: Custom ScrollTrigger interactions aligned to scroll position
+  * **Lenis**: Smooth scrolling engine driving the GSAP ticker
+  * **Framer Motion**: Route page transition fades and light interactive hover/mouse movements
+* **Deployment Platforms**: Configured for static SPA hosting
+
+# Architecture Summary
+
+* **High-Level Folder Structure**:
+  * `src/components`: UI components divided into:
+    * `layout/`: Shell layout, header/navigation, footer, mega menu, and mobile drawer.
+    * `sections/`: Home page specific components (hero, compare, market, tech strip).
+    * `common/`: Reusable page structure blocks (page hero, content split, accordion FAQ, final CTA, ROI calculator).
+    * `ui/`: Atom elements (buttons, pill badges, count-up animations, star ratings).
+  * `src/pages`: Page views (About, Technology, Goats, Sheep, Farmers, Resources, Contact).
+  * `src/context`: SiteContext providing global navigation states.
+  * `src/hooks`: Custom hooks (useHeroParallax, useCountUp, useLiveTicker, useROICalc, useLenis).
+  * `src/styles`: CSS files organized by concerns (tokens, base, chrome, pages, sections).
+  * `src/constants`: JS mirror of style design tokens (`tokens.js`) for GSAP/Framer Motion consumption.
+  * `src/data`: Static mock arrays (faqItems, testimonials, navigation structure, default ROI variables).
+  * `src/lib`: GSAP registration utilities.
+* **Important Architectural Patterns**: 
+  * **Lazy-loaded Pages**: Route components are dynamically imported inside `App.jsx` wrapped in a `<Suspense>` fallback to minimize bundle sizes.
+  * **Global Smooth Scroll Interceptor**: Standard anchor clicks (`href="#id"`) are intercepted globally in `App.jsx` and navigated using Lenis scrollTo offsets.
+* **Routing Approach**: Hash routing and canonical paths with trailing slashes `/page/` enforced in React Router configuration.
+
+# Key Components
+
+* **PageShell**: Wraps all page contents with the persistent global header navigation, mobile drawer, and footer.
+* **ROICalculator** (`src/components/common/ROICalculator.jsx`): An interactive form allowing farmers to customize herd size, feed costs, and labor to see dynamic financial projections.
+* **ScrollProgressBar**: Floating horizontal bar tracking viewport reading progression.
+* **MobileCtaBar**: Sticky bottom CTA panel visible exclusively on mobile viewports for quick engagement.
+
+# Key Pages
+
+* **HomePage**: Comprehensive feature showcase, compare matrix, client testimonials, and latest blog teaser.
+* **TechnologyPage**: Highlights collar hardware specs, solar charging capability, and regional cellular connectivity.
+* **GoatsPage & SheepPage**: Customized niche value propositions for specific sheep and goat herd needs.
+* **FarmersPage**: Focuses on modern ranching operations and ease-of-use highlights.
+* **ResourcesPage**: Hosts the agricultural blog articles, FAQs list, and the ROI Calculator.
+
+# Important Integrations
+
+* **Assets**: Solar collar media assets, SVGs, and a local video demo (`public/media/goat-wearing-herdos.mp4`) are hosted locally inside the public directory. No external CMS or database API connections are currently used.
+
+# Design System
+
+* **Color System**:
+  * `forest` (`#0D1F12`): Main heading, text, header, and footer background.
+  * `green` (`#007925`): Primary active color for buttons, CTAs, and links.
+  * `gold` (`#FCBD16`): Secondary highlight color (stats, badge indicators).
+  * `cream` (`#F5F5F5`): Primary body page background.
+* **Typography**:
+  * Headings/Display: `'Schibsted Grotesk'` (sans-serif)
+  * Body: `'Hanken Grotesk'` (sans-serif)
+  * Technical/Mono: `'Space Mono'` (monospace)
+* **Layout**: Centered container bounding max-width between `1440px` and `1760px` depending on viewport size, with fluid gutters mapping responsive clamping.
+
+# Important Decisions
+
+* **Lenis-GSAP Synchronization**: Lenis smooth scroll updates GSAP ScrollTrigger markers on every scroll event, and GSAP's ticker controls Lenis' RAF loop. This avoids scroll/animation stutter.
+* **Dual Animation Setup**: Framer Motion is chosen for route transitions and local mouse tracking (due to its state-driven nature), while GSAP handles coordinate-based scroll triggers.
+* **Git Repository Context**: `.gitignore` explicitly excludes `herdos.zip` (original 93MB archive) and `prompt.md` to prevent ballooning Git history size.
+
+# Current Status
+
+* **Completed**:
+  * Porting codebase to React structure.
+  * Configuration of animations (Lenis + GSAP ScrollTrigger + Framer Motion).
+  * Implementation of custom page layouts and responsive design.
+  * Initialization of the project's Git repository and push to GitHub `main` branch.
+* **Work in Progress**:
+  * Validation of design and typography consistency.
+* **Pending**:
+  * Production bundle optimization and test build deployment.
+
+# Known Issues
+
+* No active or unresolved functional bugs reported.
+
+# AI Handoff
+
+* **Recently Completed**:
+  * Initialized Git repository for `/home/diganth/Desktop/product/4/herdos-react`.
+  * Added `herdos.zip` and `prompt.md` to `.gitignore`.
+  * Configured Git remote origin pointing to `https://github.com/herdosinfo/herdos_react.git` and successfully pushed `main` branch using Personal Access Token credentials.
+  * Set up and verified the local development environment using `npm run dev` running on `http://localhost:5173/`.
+* **Current Task**: Creating and maintaining `PROJECT_CONTEXT.md` at the root of the project.
+* **What to do next**: Validate the Vite build using `npm run build` to ensure there are no compilation errors or bundler warnings before production staging.
