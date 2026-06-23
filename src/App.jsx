@@ -55,7 +55,6 @@ function AnimatedRoutes() {
     else if (path.includes('/sheep/')) pageName = 'sheep'
     else if (path.includes('/farmers/')) pageName = 'farmers'
     else if (path.includes('/resources/')) pageName = 'resources'
-    else if (path.includes('/home/')) pageName = 'home'
     document.body.dataset.page = pageName
   }, [location])
 
@@ -70,8 +69,8 @@ function AnimatedRoutes() {
       >
         <Suspense fallback={<div className="min-h-screen bg-cream" />}>
           <Routes location={location}>
-            <Route path="/" element={<Navigate to="/home/" replace />} />
-            <Route path="/home/" element={<HomePage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/home/" element={<Navigate to="/" replace />} />
             <Route path="/about/" element={<AboutPage />} />
             <Route path="/contact/" element={<ContactPage />} />
             <Route path="/technology/" element={<TechnologyPage />} />

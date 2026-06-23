@@ -52,7 +52,7 @@ export default function Header() {
         <header className={`nav site-header ${scrolled ? 'scrolled' : ''}`}>
           <div className="container">
             {/* Brand Logo */}
-            <Link to="/home/" className="brand">
+            <Link to="/" className="brand">
               <div className="logo-wrap">
                 <img src="/assets/green-logo.svg" alt="HERDOS logo" width="17" height="26" className="logo-colour" />
                 <img src="/assets/white-logo.svg" alt="" aria-hidden="true" width="17" height="26" className="logo-white" />

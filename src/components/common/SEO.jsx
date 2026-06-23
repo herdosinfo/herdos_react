@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
 const PAGE_META = {
-  '/home/': {
+  '/': {
     title: 'HERDOS — Virtual Fencing & Early Illness Detection for Sheep & Goats',
     description: "HERDOS is India's first virtual fencing and early illness detection smart collar for sheep and goats.",
   },
@@ -42,7 +42,7 @@ const PAGE_META = {
 
 export default function SEO({ title, description }) {
   const { pathname } = useLocation()
-  const meta = PAGE_META[pathname] || PAGE_META['/home/']
+  const meta = PAGE_META[pathname] || PAGE_META['/']
 
   const finalTitle = title || meta.title
   const finalDesc = description || meta.description
