@@ -6,7 +6,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import { SiteProvider } from './context/SiteContext'
 import PageShell from './components/layout/PageShell'
-import ScrollProgressBar from './components/common/ScrollProgressBar'
 import MobileCtaBar from './components/common/MobileCtaBar'
 import SEO from './components/common/SEO'
 
@@ -91,7 +90,6 @@ function AppContent() {
     <>
       <SEO />
       <HashScrollObserver />
-      <ScrollProgressBar />
       <PageShell>
         <AnimatedRoutes />
       </PageShell>

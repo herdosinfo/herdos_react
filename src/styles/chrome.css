@@ -5,12 +5,6 @@
 
 [data-site-header] { position: sticky; top: 0; z-index: 1000; }
 
-/* ---- Scroll progress ---- */
-.scroll-bar {
-  position: fixed; top: 0; left: 0; height: 3px; width: var(--scroll-progress);
-  background: var(--green); z-index: 1200; transition: width 0.1s linear;
-}
-
 /* ---- Utility strip ---- */
 .ustrip {
   background: var(--forest); color: rgba(245,245,245,0.82);

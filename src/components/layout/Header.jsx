@@ -25,9 +25,6 @@ export default function Header() {
   return (
     <>
       <div data-site-header="">
-        {/* Scroll progress bar */}
-        <div className="scroll-bar" />
-
         {/* Main Navbar */}
         <header className={`nav site-header ${scrolled ? 'scrolled' : ''}`}>
           <div className="container">

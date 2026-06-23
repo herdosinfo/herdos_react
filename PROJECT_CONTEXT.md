@@ -49,7 +49,6 @@
 * **PageShell**: Wraps all page contents with the persistent global header navigation, `<FarmerHelpline />` pre-footer bar, mobile drawer, and footer.
 * **FarmerHelpline** (`src/components/layout/FarmerHelpline.jsx`): Standalone helpline bar rendered globally above the Footer on every page. Displays the Farmer Helpline phone number and a "Become a Pilot Farmer" link. Previously embedded inline inside the Header's utility strip; relocated to pre-footer on 2026-06-24.
 * **ROICalculator** (`src/components/common/ROICalculator.jsx`): An interactive form allowing farmers to customize herd size, feed costs, and labor to see dynamic financial projections.
-* **ScrollProgressBar**: Floating horizontal bar tracking viewport reading progression.
 * **MobileCtaBar**: Sticky bottom CTA panel visible exclusively on mobile viewports for quick engagement.
 * **TeamSection** (`src/components/sections/home/TeamSection.jsx`): Founder team showcase rendered on the Home page. Contains founder data for Ananth R Kulkarni (Co-Founder & Operations Lead) and Gowtham M A (Co-Founder & Technical Lead). Uses Framer Motion `<Reveal>` for scroll-triggered entrance animations.
 
@@ -118,6 +117,7 @@
   * Initialization of the project's Git repository and push to GitHub `main` branch.
   * **Team section migration** from About page to Home page (2026-06-22). Placed after Testimonials, before TechStrip. Premium card styles updated (hover lift, photo zoom, green-bright border accent).
   * **[2026-06-24] Farmer Helpline bar relocated** from the top utility strip inside `Header.jsx` to a standalone pre-footer component (`FarmerHelpline.jsx`). The `[data-site-header]` CSS sticky offset corrected from `top: -38px` to `top: 0`.
+  * **[2026-06-24] Green Top Loading Bar Removed**: Removed the `ScrollProgressBar` component, `useScrollProgress` hook, `.scroll-bar` CSS rules, and the `--scroll-progress` variable, cleaning up imports in `App.jsx` and `Header.jsx`.
 * **Work in Progress**:
   * Validation of design and typography consistency.
 * **Pending**:
@@ -136,5 +136,6 @@
   * Set up and verified the local development environment using `npm run dev` running on `http://localhost:5173/`.
   * **[2026-06-22] Team section successfully migrated from About to Home.** Component is a new standalone file at `src/components/sections/home/TeamSection.jsx`. Founder data (names, roles, photos) lives exclusively in that file. About page no longer imports or renders team content. No duplicate team sections exist. Full names corrected to `Ananth R Kulkarni` (Co-Founder & Operations Lead) and `Gowtham M A` (Co-Founder & Technical Lead).
   * **[2026-06-24] Farmer Helpline bar relocated from top-of-page to pre-footer.** The inline `ustrip` block was extracted from `Header.jsx` into a new standalone component at `src/components/layout/FarmerHelpline.jsx`. It is now rendered in `PageShell.jsx` immediately before `<Footer />` on every page. The `[data-site-header]` sticky CSS offset was fixed from `top: -38px` to `top: 0`. A `.ustrip--prefooter` modifier adds a bottom border to visually separate the bar from the footer body.
-* **Current Task**: Farmer Helpline relocation completed (2026-06-24). Pending build verification and push to remote.
+  * **[2026-06-24] Green top loading/scroll progress bar removed.** The `ScrollProgressBar` component and its hook `useScrollProgress` were deleted. Duplicate `.scroll-bar` markup inside `Header.jsx`, corresponding styling in `chrome.css`, and `--scroll-progress` CSS variable in `tokens.css` were completely removed.
+* **Current Status / AI Handoff**: Green top loading bar successfully removed.
 * **What to do next**: Run `npm run build` to confirm production bundle is clean, then commit and push to GitHub `main`.

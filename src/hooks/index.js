@@ -1,4 +1,3 @@
-export { useScrollProgress } from './useScrollProgress'
 export { useScrolled } from './useScrolled'
 export { useCountUp } from './useCountUp'
 export { useLenis } from './useLenis'

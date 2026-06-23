@@ -60,8 +60,6 @@
   --maxw: 1440px;
   --nav-h: 64px;
   --gutter: clamp(1.25rem, 5vw, 4rem);
-
-  --scroll-progress: 0%;
 }
 
 @media (min-width: 1440px) {
