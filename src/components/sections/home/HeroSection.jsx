@@ -40,155 +40,207 @@ const TRUST = [
 /* Component                                                             */
 /* ------------------------------------------------------------------ */
 export default function HeroSection() {
-  const sectionRef  = useRef(null)
-  const videoRef    = useRef(null)
-  const overlayRef  = useRef(null)
-  const contentRef  = useRef(null)
+  const shellRef = useRef(null)
+  const containerRef = useRef(null)
+  const videoRef = useRef(null)
+  const overlayRef = useRef(null)
+  const contentRef = useRef(null)
   const scrollCueRef = useRef(null)
 
-  /* ---- Entrance + scroll animations ---- */
   useGSAP(() => {
-    const section  = sectionRef.current
-    const video    = videoRef.current
-    const overlay  = overlayRef.current
-    const content  = contentRef.current
+    const shell = shellRef.current
+    const container = containerRef.current
+    const video = videoRef.current
+    const overlay = overlayRef.current
+    const content = contentRef.current
     const scrollCue = scrollCueRef.current
 
-    if (!section) return
+    if (!shell || !container || !video || !overlay || !content) return
 
-    // --- Entrance sequence ---
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+    // --- Initial State (gsap.set) ---
+    // Hide content elements before scroll progress starts
+    gsap.set([
+      '.hero-eyebrow',
+      '.hero-word',
+      '.hero-desc',
+      '.hero-cta-btn',
+      '.hero-trust-item'
+    ], { opacity: 0 })
 
-    tl.from(video,   { opacity: 0, duration: 1.4 }, 0)
-      .from(overlay, { opacity: 0, duration: 1.0 }, 0.2)
-      .from('.hero-eyebrow',    { opacity: 0, y: 22, duration: 0.7 }, 0.6)
-      .from('.hero-h1-line',    { opacity: 0, y: 34, duration: 0.8, stagger: 0.13 }, 0.82)
-      .from('.hero-desc',       { opacity: 0, y: 22, duration: 0.6 }, 1.2)
-      .from('.hero-cta-btn',    { opacity: 0, y: 16, duration: 0.55, stagger: 0.1 }, 1.45)
-      .from('.hero-trust-item', { opacity: 0, y: 10, duration: 0.5,  stagger: 0.08 }, 1.65)
-      .from(scrollCue, { opacity: 0, duration: 0.5 }, 2.1)
+    gsap.set([
+      '.hero-eyebrow',
+      '.hero-desc',
+      '.hero-cta-btn',
+      '.hero-trust-item'
+    ], { y: 20 })
 
-    // --- Scroll fade-out on hero content (0 → 30% scroll through hero) ---
-    ScrollTrigger.create({
-      trigger: section,
-      start: 'top top',
-      end: '30% top',
-      onUpdate: (self) => {
-        if (content) {
-          gsap.set(content, { opacity: Math.max(0, 1 - self.progress * 2.0) })
-        }
-        if (scrollCue) {
-          gsap.set(scrollCue, { opacity: Math.max(0, 1 - self.progress * 4) })
-        }
-      },
+    gsap.set('.hero-word', { y: 40 })
+    gsap.set(scrollCue, { opacity: 1 })
+
+    // --- Scrubbed Scroll Animation ---
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: shell,
+        start: 'top top',
+        end: '+=200%',
+        pin: container,
+        pinSpacing: true,
+        scrub: 0.5,
+      }
     })
 
-    // --- Subtle parallax on background ---
-    ScrollTrigger.create({
-      trigger: section,
-      start: 'top top',
-      end: 'bottom top',
-      onUpdate: (self) => {
-        if (video) {
-          gsap.set(video, { y: self.progress * -60 })
-        }
-      },
-    })
-  }, { scope: sectionRef })
+    // Fade out scroll cue early
+    tl.to(scrollCue, { opacity: 0, duration: 0.8, ease: 'power1.out' }, 0)
+
+    // Parallax background video across the entire timeline
+    tl.to(video, { y: -80, ease: 'none', duration: 10 }, 0)
+
+    // Eyebrow badge
+    tl.to('.hero-eyebrow', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, 0.8)
+
+    // H1 Line 1 words
+    const line1Words = gsap.utils.toArray('.hero-word-line1')
+    tl.to(line1Words, {
+      opacity: 1,
+      y: 0,
+      stagger: 0.15,
+      duration: 0.8,
+      ease: 'power2.out'
+    }, 1.5)
+
+    // H1 Line 2 words
+    const line2Words = gsap.utils.toArray('.hero-word-line2')
+    tl.to(line2Words, {
+      opacity: 1,
+      y: 0,
+      stagger: 0.15,
+      duration: 0.8,
+      ease: 'power2.out'
+    }, 2.8)
+
+    // Description
+    tl.to('.hero-desc', { opacity: 1, y: 0, duration: 1.3, ease: 'power2.out' }, 4.2)
+
+    // CTAs
+    tl.to('.hero-cta-btn', {
+      opacity: 1,
+      y: 0,
+      stagger: 0.15,
+      duration: 1.3,
+      ease: 'power2.out'
+    }, 5.5)
+
+    // Trust items
+    const trustItems = gsap.utils.toArray('.hero-trust-item')
+    tl.to(trustItems, {
+      opacity: 1,
+      y: 0,
+      stagger: 0.12,
+      duration: 1.2,
+      ease: 'power2.out'
+    }, 6.8)
+  }, { scope: shellRef })
 
   return (
-    <section
-      ref={sectionRef}
-      className="hero-cinema"
-      aria-label="HERDOS Hero"
-    >
-      {/* ── Layer 1: Background video ── */}
-      <div className="hero-bg-wrap">
-        <video
-          ref={videoRef}
-          className="hero-bg-video"
-          src="/media/goat-wearing-herdos.mp4"
-          poster="/media/field.jpg"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-hidden="true"
-        />
-      </div>
+    <section ref={shellRef} className="hero-shell" aria-label="HERDOS Hero">
+      <div ref={containerRef} className="hero-container">
+        {/* Layer 1: Background video */}
+        <div className="hero-bg-wrap">
+          <video
+            ref={videoRef}
+            className="hero-bg-video"
+            src="/media/goat-wearing-herdos.mp4"
+            poster="/media/field.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          />
+        </div>
 
-      {/* ── Layer 2: Gradient overlay ── */}
-      <div ref={overlayRef} className="hero-overlay" aria-hidden="true" />
+        {/* Layer 2: Gradient overlay */}
+        <div ref={overlayRef} className="hero-overlay" aria-hidden="true" />
 
-      {/* ── Layer 3: Content ── */}
-      <div ref={contentRef} className="hero-content">
-        <div className="container">
-          <div className="hero-text-block">
+        {/* Layer 3: Vignette */}
+        <div className="hero-vignette" aria-hidden="true" />
 
-            {/* Eyebrow */}
-            <div className="hero-eyebrow">
-              <span className="hero-eyebrow-dot" aria-hidden="true" />
-              India's First Smart Collar System for Sheep &amp; Goats
-            </div>
+        {/* Layer 4: Content */}
+        <div ref={contentRef} className="hero-content">
+          <div className="container">
+            <div className="hero-text-block">
+              {/* Eyebrow */}
+              <div className="hero-eyebrow">
+                <span className="hero-eyebrow-dot" aria-hidden="true" />
+                India's First Smart Collar System for Sheep &amp; Goats
+              </div>
 
-            {/* Headline */}
-            <h1 className="hero-h1">
-              <span className="hero-h1-line">One Smart Collar.</span>
-              <span className="hero-h1-line hero-h1-accent">Two Powerful Technologies.</span>
-            </h1>
-
-            {/* Description */}
-            <p className="hero-desc">
-              HERDOS smart collars bring AI-powered virtual fencing and real-time
-              health monitoring to India's 223 million sheep and goat population —
-              solar-powered, app-connected, and built for the field.
-            </p>
-
-            {/* CTAs */}
-            <div className="hero-ctas">
-              <Link
-                to="/contact/"
-                className="hero-cta-btn hero-cta-primary"
-                id="hero-cta-demo"
-              >
-                Request a Demo {ICON.arrow}
-              </Link>
-              <a
-                href="#how"
-                className="hero-cta-btn hero-cta-ghost"
-                id="hero-cta-watch"
-              >
-                {ICON.play} Watch How It Works
-              </a>
-            </div>
-
-            {/* Trust strip */}
-            <div className="hero-trust-strip" role="list" aria-label="Key features">
-              {TRUST.map((item, i) => (
-                <span key={item.label} className="hero-trust-item" role="listitem">
-                  {i > 0 && <span className="hero-trust-sep" aria-hidden="true">·</span>}
-                  <span className="hero-trust-icon" aria-hidden="true">{item.icon}</span>
-                  {item.label}
+              {/* Headline */}
+              <h1 className="hero-h1">
+                <span className="hero-word-line">
+                  <span className="hero-word hero-word-line1">One</span>{' '}
+                  <span className="hero-word hero-word-line1">Smart</span>{' '}
+                  <span className="hero-word hero-word-line1">Collar.</span>
                 </span>
-              ))}
-            </div>
+                <span className="hero-word-line">
+                  <span className="hero-word hero-word-line2 hero-word--accent">Infinite</span>{' '}
+                  <span className="hero-word hero-word-line2 hero-word--accent">Possibilities.</span>
+                </span>
+              </h1>
 
+              {/* Description */}
+              <p className="hero-desc">
+                HERDOS smart collars bring AI-powered virtual fencing and real-time
+                health monitoring to India's 223 million sheep and goat population —
+                solar-powered, app-connected, and built for the field.
+              </p>
+
+              {/* CTAs */}
+              <div className="hero-ctas">
+                <Link
+                  to="/contact/"
+                  className="hero-cta-btn hero-cta-primary"
+                  id="hero-cta-demo"
+                >
+                  Request a Demo {ICON.arrow}
+                </Link>
+                <a
+                  href="#how"
+                  className="hero-cta-btn hero-cta-ghost"
+                  id="hero-cta-watch"
+                >
+                  {ICON.play} Watch How It Works
+                </a>
+              </div>
+
+              {/* Trust strip */}
+              <div className="hero-trust-strip" role="list" aria-label="Key features">
+                {TRUST.map((item, i) => (
+                  <span key={item.label} className="hero-trust-item" role="listitem">
+                    {i > 0 && <span className="hero-trust-sep" aria-hidden="true">·</span>}
+                    <span className="hero-trust-icon" aria-hidden="true">{item.icon}</span>
+                    {item.label}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* ── Scroll cue ── */}
-      <motion.div
-        ref={scrollCueRef}
-        className="hero-scroll-cue"
-        animate={{ y: [0, 9, 0] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-        aria-hidden="true"
-      >
-        {ICON.chevDown}
-        <span>Scroll</span>
-      </motion.div>
+        {/* Scroll cue */}
+        <motion.div
+          ref={scrollCueRef}
+          className="hero-scroll-cue"
+          animate={{ y: [0, 9, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          aria-hidden="true"
+        >
+          {ICON.chevDown}
+          <span>Scroll</span>
+        </motion.div>
+      </div>
     </section>
   )
 }
+

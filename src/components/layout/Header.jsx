@@ -19,7 +19,7 @@ const ICON = {
 
 export default function Header() {
   const { setMobileMenuOpen } = useSite()
-  const scrolled = useScrolled(40)
+  const scrolled = useScrolled(100)
   const { pathname } = useLocation()
 
   return (
