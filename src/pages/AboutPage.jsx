@@ -17,43 +17,6 @@ const VALUES = [
   { title: 'Open innovation', desc: 'We build with partners — cooperatives, FPOs and development programs.' },
 ]
 
-const TEAM_MEMBERS = [
-  {
-    id: 1,
-    name: 'Ananth',
-    role: 'Co-Founder & CEO',
-    bio: 'Agricultural engineer focused on small-ruminant systems and precision livestock management.',
-    photo: '/media/ananth-team.png',
-  },
-  {
-    id: 2,
-    name: 'Gowtham',
-    role: 'Co-Founder & CTO',
-    bio: 'Embedded systems engineer. Designed the HERDOS solar collar and power management system.',
-    photo: '/media/gowtham-team.png',
-  },
-  {
-    id: 3,
-    name: 'Rajesh Kumar',
-    role: 'Founder & CEO',
-    bio: 'Agricultural engineer focused on small-ruminant systems.',
-    photo: null,
-  },
-  {
-    id: 4,
-    name: 'Dr. Anjali Sharma',
-    role: 'Head of Animal Health',
-    bio: 'Veterinary data scientist leading illness-detection models.',
-    photo: null,
-  },
-  {
-    id: 5,
-    name: 'Dr. Vikram Singh',
-    role: 'Head of Hardware',
-    bio: 'Embedded & power systems for rugged field devices.',
-    photo: null,
-  },
-]
 
 const ICON = {
   arrow: (
@@ -128,34 +91,6 @@ export default function AboutPage() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Leadership Team */}
-      <section className="section section--sage">
-        <div className="container">
-          <Reveal className="shead center">
-            <span className="eyebrow">Leadership</span>
-            <h2 className="t-h2">The team building it.</h2>
-          </Reveal>
-          <div className="team-grid">
-            {TEAM_MEMBERS.map((member) => (
-              <Reveal className="team-card" key={member.id}>
-                <div
-                  className="ph"
-                  style={member.photo ? { backgroundImage: `url(${member.photo})` } : undefined}
-                ></div>
-                <div className="info">
-                  <h5>{member.name}</h5>
-                  <div className="role">{member.role}</div>
-                  <p>{member.bio}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <p style={{ textAlign: 'center', color: 'var(--faint)', fontSize: '0.82rem', marginTop: '1.25rem' }}>
-            Team photos are placeholders pending real headshots.
-          </p>
         </div>
       </section>
 

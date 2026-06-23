@@ -6,6 +6,7 @@ import ProductCompareSection from '../components/sections/home/ProductCompareSec
 import MarketSection from '../components/sections/home/MarketSection'
 import HowItWorksSection from '../components/sections/home/HowItWorksSection'
 import TestimonialsSection from '../components/sections/home/TestimonialsSection'
+import TeamSection from '../components/sections/home/TeamSection'
 import TechStripSection from '../components/sections/home/TechStripSection'
 import BlogTeaserSection from '../components/sections/home/BlogTeaserSection'
 import FinalCTA from '../components/common/FinalCTA'
@@ -21,6 +22,7 @@ export default function HomePage() {
       <MarketSection />
       <HowItWorksSection />
       <TestimonialsSection />
+      <TeamSection />
       <TechStripSection />
       <BlogTeaserSection />
       <FinalCTA />

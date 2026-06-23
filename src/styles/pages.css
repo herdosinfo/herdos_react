@@ -70,15 +70,22 @@
 .tl-item p { color: var(--muted); font-size: 0.95rem; }
 
 /* ---- Team / role cards ---- */
-.team-grid, .role-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-@media (min-width: 560px) { .team-grid { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 880px) { .team-grid { grid-template-columns: repeat(3, 1fr); } }
-.team-card { background: var(--paper); border: 1px solid var(--border-soft); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-sm); }
-.team-card .ph { height: 220px; background: var(--sage-100); background-size: cover; background-position: center; }
-.team-card .info { padding: 1.25rem; }
-.team-card h5 { font-size: 1.1rem; }
-.team-card .role { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--green); margin: 0.25rem 0 0.5rem; }
-.team-card p { font-size: 0.9rem; color: var(--muted); }
+.team-grid, .role-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+@media (min-width: 560px) {
+  .team-grid {
+    grid-template-columns: 1fr 1fr;
+    max-width: 900px;
+    margin-inline: auto;
+  }
+}
+.team-card { background: var(--paper); border: 1px solid var(--border-soft); border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--sh-sm); transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+.team-card:hover { transform: translateY(-6px); box-shadow: var(--sh-lg); }
+.team-card .ph { height: 280px; background: var(--sage-100); background-size: cover; background-position: center top; transition: transform 0.65s var(--ease); }
+.team-card:hover .ph { transform: scale(1.04); }
+.team-card .info { padding: 1.5rem 1.75rem 1.75rem; border-top: 3px solid var(--green-bright); }
+.team-card h5 { font-size: 1.18rem; font-weight: 700; color: var(--forest); }
+.team-card .role { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--green); margin: 0.35rem 0 0.7rem; }
+.team-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.58; }
 
 .role-card { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; justify-content: space-between; align-items: center; background: var(--paper); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: 1.25rem 1.5rem; box-shadow: var(--sh-sm); transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
 .role-card:hover { transform: translateY(-3px); box-shadow: var(--sh-md); }

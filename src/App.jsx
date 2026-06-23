@@ -44,6 +44,21 @@ function HashScrollObserver() {
 function AnimatedRoutes() {
   const location = useLocation()
 
+  useEffect(() => {
+    const path = location.pathname
+    let pageName = 'home'
+    if (path.includes('/about/')) pageName = 'about'
+    else if (path.includes('/contact/')) pageName = 'contact'
+    else if (path.includes('/technology/')) pageName = 'technology'
+    else if (path.includes('/solutions/')) pageName = 'solutions'
+    else if (path.includes('/goats/')) pageName = 'goats'
+    else if (path.includes('/sheep/')) pageName = 'sheep'
+    else if (path.includes('/farmers/')) pageName = 'farmers'
+    else if (path.includes('/resources/')) pageName = 'resources'
+    else if (path.includes('/home/')) pageName = 'home'
+    document.body.dataset.page = pageName
+  }, [location])
+
   return (
     <AnimatePresence mode="wait">
       <motion.div

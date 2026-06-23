@@ -49,11 +49,14 @@ export default function Header() {
         </div>
 
         {/* Main Navbar */}
-        <header className={`nav ${scrolled ? 'scrolled' : ''}`}>
+        <header className={`nav site-header ${scrolled ? 'scrolled' : ''}`}>
           <div className="container">
             {/* Brand Logo */}
             <Link to="/home/" className="brand">
-              <img src="/assets/green-logo.svg" alt="HERDOS logo" width="32" height="32" />
+              <div className="logo-wrap">
+                <img src="/assets/green-logo.svg" alt="HERDOS logo" width="17" height="26" className="logo-colour" />
+                <img src="/assets/white-logo.svg" alt="" aria-hidden="true" width="17" height="26" className="logo-white" />
+              </div>
               <span className="word">HERDOS</span>
             </Link>
 

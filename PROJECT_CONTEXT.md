@@ -9,6 +9,7 @@
   * Side-by-side product comparison matrix.
   * Interactive ROI (Return on Investment) calculator for livestock farmers.
   * Responsive layout with customized desktop mega menu and mobile navigation drawer.
+  * Founder team showcase section on the Home page.
 * **Current Development Stage**: Core features, page routing, and design system are implemented. The local development environment is configured, and the codebase is pushed to remote origin.
 
 # Tech Stack
@@ -28,7 +29,7 @@
 * **High-Level Folder Structure**:
   * `src/components`: UI components divided into:
     * `layout/`: Shell layout, header/navigation, footer, mega menu, and mobile drawer.
-    * `sections/`: Home page specific components (hero, compare, market, tech strip).
+    * `sections/`: Home page specific components (hero, compare, market, tech strip, team).
     * `common/`: Reusable page structure blocks (page hero, content split, accordion FAQ, final CTA, ROI calculator).
     * `ui/`: Atom elements (buttons, pill badges, count-up animations, star ratings).
   * `src/pages`: Page views (About, Technology, Goats, Sheep, Farmers, Resources, Contact).
@@ -49,18 +50,42 @@
 * **ROICalculator** (`src/components/common/ROICalculator.jsx`): An interactive form allowing farmers to customize herd size, feed costs, and labor to see dynamic financial projections.
 * **ScrollProgressBar**: Floating horizontal bar tracking viewport reading progression.
 * **MobileCtaBar**: Sticky bottom CTA panel visible exclusively on mobile viewports for quick engagement.
+* **TeamSection** (`src/components/sections/home/TeamSection.jsx`): Founder team showcase rendered on the Home page. Contains founder data for Ananth R Kulkarni (Co-Founder & Operations Lead) and Gowtham M A (Co-Founder & Technical Lead). Uses Framer Motion `<Reveal>` for scroll-triggered entrance animations.
 
 # Key Pages
 
-* **HomePage**: Comprehensive feature showcase, compare matrix, client testimonials, and latest blog teaser.
+* **HomePage**: Comprehensive feature showcase, compare matrix, client testimonials, **founder team section**, technology strip, and latest blog teaser.
 * **TechnologyPage**: Highlights collar hardware specs, solar charging capability, and regional cellular connectivity.
 * **GoatsPage & SheepPage**: Customized niche value propositions for specific sheep and goat herd needs.
 * **FarmersPage**: Focuses on modern ranching operations and ease-of-use highlights.
 * **ResourcesPage**: Hosts the agricultural blog articles, FAQs list, and the ROI Calculator.
+* **AboutPage**: Company story, roadmap, core values, open careers, and press. Does **not** render a team section (team lives on Home page).
+
+# Component Ownership
+
+| Section | Owner Page | Component |
+|---|---|---|
+| Hero | Home | `sections/home/HeroSection.jsx` |
+| Live Ticker | Home | `sections/home/LiveTickerSection.jsx` |
+| Value Propositions | Home | `sections/home/ValuePropSection.jsx` |
+| Key Features | Home | `sections/home/KeyFeaturesSection.jsx` |
+| Product Compare | Home | `sections/home/ProductCompareSection.jsx` |
+| Market Stats | Home | `sections/home/MarketSection.jsx` |
+| How It Works | Home | `sections/home/HowItWorksSection.jsx` |
+| Testimonials | Home | `sections/home/TestimonialsSection.jsx` |
+| **Team / Founders** | **Home** | **`sections/home/TeamSection.jsx`** |
+| Tech Strip | Home | `sections/home/TechStripSection.jsx` |
+| Blog Teaser | Home | `sections/home/BlogTeaserSection.jsx` |
+| Story / OurStory | About | inline in `pages/AboutPage.jsx` |
+| Roadmap | About | inline in `pages/AboutPage.jsx` |
+| Values | About | inline in `pages/AboutPage.jsx` |
+| Careers | About | inline in `pages/AboutPage.jsx` |
+| Press | About | inline in `pages/AboutPage.jsx` |
 
 # Important Integrations
 
 * **Assets**: Solar collar media assets, SVGs, and a local video demo (`public/media/goat-wearing-herdos.mp4`) are hosted locally inside the public directory. No external CMS or database API connections are currently used.
+* **Team Photos**: Founder headshots at `public/media/ananth-team.png` and `public/media/gowtham-team.png`.
 
 # Design System
 
@@ -80,6 +105,7 @@
 * **Lenis-GSAP Synchronization**: Lenis smooth scroll updates GSAP ScrollTrigger markers on every scroll event, and GSAP's ticker controls Lenis' RAF loop. This avoids scroll/animation stutter.
 * **Dual Animation Setup**: Framer Motion is chosen for route transitions and local mouse tracking (due to its state-driven nature), while GSAP handles coordinate-based scroll triggers.
 * **Git Repository Context**: `.gitignore` explicitly excludes `herdos.zip` (original 93MB archive) and `prompt.md` to prevent ballooning Git history size.
+* **Team Section on Home Page**: The founder team section was moved from About to Home (2026-06-22) to follow the natural investor/visitor storytelling arc: social proof (testimonials) → team credibility → technology → CTA.
 
 # Current Status
 
@@ -88,6 +114,7 @@
   * Configuration of animations (Lenis + GSAP ScrollTrigger + Framer Motion).
   * Implementation of custom page layouts and responsive design.
   * Initialization of the project's Git repository and push to GitHub `main` branch.
+  * **Team section migration** from About page to Home page (2026-06-22). Placed after Testimonials, before TechStrip. Premium card styles updated (hover lift, photo zoom, green-bright border accent).
 * **Work in Progress**:
   * Validation of design and typography consistency.
 * **Pending**:
@@ -104,5 +131,6 @@
   * Added `herdos.zip` and `prompt.md` to `.gitignore`.
   * Configured Git remote origin pointing to `https://github.com/herdosinfo/herdos_react.git` and successfully pushed `main` branch using Personal Access Token credentials.
   * Set up and verified the local development environment using `npm run dev` running on `http://localhost:5173/`.
-* **Current Task**: Creating and maintaining `PROJECT_CONTEXT.md` at the root of the project.
+  * **[2026-06-22] Team section successfully migrated from About to Home.** Component is a new standalone file at `src/components/sections/home/TeamSection.jsx`. Founder data (names, roles, photos) lives exclusively in that file. About page no longer imports or renders team content. No duplicate team sections exist. Full names corrected to `Ananth R Kulkarni` (Co-Founder & Operations Lead) and `Gowtham M A` (Co-Founder & Technical Lead).
+* **Current Task**: Completed team section migration and PROJECT_CONTEXT.md update.
 * **What to do next**: Validate the Vite build using `npm run build` to ensure there are no compilation errors or bundler warnings before production staging.
