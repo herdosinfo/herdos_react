@@ -3,7 +3,7 @@
    Mobile-first: drawer by default, desktop nav at >=1024px.
    ============================================================ */
 
-[data-site-header] { position: sticky; top: -38px; z-index: 1000; }
+[data-site-header] { position: sticky; top: 0; z-index: 1000; }
 
 /* ---- Scroll progress ---- */
 .scroll-bar {
@@ -16,6 +16,7 @@
   background: var(--forest); color: rgba(245,245,245,0.82);
   font-size: 0.78rem;
 }
+.ustrip--prefooter { border-bottom: 1px solid rgba(255,255,255,0.10); }
 .ustrip .container { display: flex; align-items: center; justify-content: space-between; height: 38px; gap: 1rem; }
 .ustrip a { color: rgba(245,245,245,0.82); }
 .ustrip a:hover { color: #fff; }

@@ -46,7 +46,8 @@
 
 # Key Components
 
-* **PageShell**: Wraps all page contents with the persistent global header navigation, mobile drawer, and footer.
+* **PageShell**: Wraps all page contents with the persistent global header navigation, `<FarmerHelpline />` pre-footer bar, mobile drawer, and footer.
+* **FarmerHelpline** (`src/components/layout/FarmerHelpline.jsx`): Standalone helpline bar rendered globally above the Footer on every page. Displays the Farmer Helpline phone number and a "Become a Pilot Farmer" link. Previously embedded inline inside the Header's utility strip; relocated to pre-footer on 2026-06-24.
 * **ROICalculator** (`src/components/common/ROICalculator.jsx`): An interactive form allowing farmers to customize herd size, feed costs, and labor to see dynamic financial projections.
 * **ScrollProgressBar**: Floating horizontal bar tracking viewport reading progression.
 * **MobileCtaBar**: Sticky bottom CTA panel visible exclusively on mobile viewports for quick engagement.
@@ -76,6 +77,7 @@
 | **Team / Founders** | **Home** | **`sections/home/TeamSection.jsx`** |
 | Tech Strip | Home | `sections/home/TechStripSection.jsx` |
 | Blog Teaser | Home | `sections/home/BlogTeaserSection.jsx` |
+| **Farmer Helpline Bar** | **All pages (pre-footer)** | **`layout/FarmerHelpline.jsx`** |
 | Story / OurStory | About | inline in `pages/AboutPage.jsx` |
 | Roadmap | About | inline in `pages/AboutPage.jsx` |
 | Values | About | inline in `pages/AboutPage.jsx` |
@@ -115,6 +117,7 @@
   * Implementation of custom page layouts and responsive design.
   * Initialization of the project's Git repository and push to GitHub `main` branch.
   * **Team section migration** from About page to Home page (2026-06-22). Placed after Testimonials, before TechStrip. Premium card styles updated (hover lift, photo zoom, green-bright border accent).
+  * **[2026-06-24] Farmer Helpline bar relocated** from the top utility strip inside `Header.jsx` to a standalone pre-footer component (`FarmerHelpline.jsx`). The `[data-site-header]` CSS sticky offset corrected from `top: -38px` to `top: 0`.
 * **Work in Progress**:
   * Validation of design and typography consistency.
 * **Pending**:
@@ -132,5 +135,6 @@
   * Configured Git remote origin pointing to `https://github.com/herdosinfo/herdos_react.git` and successfully pushed `main` branch using Personal Access Token credentials.
   * Set up and verified the local development environment using `npm run dev` running on `http://localhost:5173/`.
   * **[2026-06-22] Team section successfully migrated from About to Home.** Component is a new standalone file at `src/components/sections/home/TeamSection.jsx`. Founder data (names, roles, photos) lives exclusively in that file. About page no longer imports or renders team content. No duplicate team sections exist. Full names corrected to `Ananth R Kulkarni` (Co-Founder & Operations Lead) and `Gowtham M A` (Co-Founder & Technical Lead).
-* **Current Task**: Completed team section migration and PROJECT_CONTEXT.md update.
-* **What to do next**: Validate the Vite build using `npm run build` to ensure there are no compilation errors or bundler warnings before production staging.
+  * **[2026-06-24] Farmer Helpline bar relocated from top-of-page to pre-footer.** The inline `ustrip` block was extracted from `Header.jsx` into a new standalone component at `src/components/layout/FarmerHelpline.jsx`. It is now rendered in `PageShell.jsx` immediately before `<Footer />` on every page. The `[data-site-header]` sticky CSS offset was fixed from `top: -38px` to `top: 0`. A `.ustrip--prefooter` modifier adds a bottom border to visually separate the bar from the footer body.
+* **Current Task**: Farmer Helpline relocation completed (2026-06-24). Pending build verification and push to remote.
+* **What to do next**: Run `npm run build` to confirm production bundle is clean, then commit and push to GitHub `main`.
