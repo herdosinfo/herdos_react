@@ -19,7 +19,7 @@ const ICON = {
     </svg>
   ),
   chevDown: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="hero-scroll-arrow">
       <path d="M6 9l6 6 6-6" />
     </svg>
   ),
@@ -43,102 +43,122 @@ export default function HeroSection() {
   const shellRef = useRef(null)
   const containerRef = useRef(null)
   const videoRef = useRef(null)
-  const overlayRef = useRef(null)
-  const contentRef = useRef(null)
-  const scrollCueRef = useRef(null)
+  const taglineRef = useRef(null)
+  const taglineScrollRef = useRef(null)
 
   useGSAP(() => {
     const shell = shellRef.current
     const container = containerRef.current
     const video = videoRef.current
-    const overlay = overlayRef.current
-    const content = contentRef.current
-    const scrollCue = scrollCueRef.current
+    const tagline = taglineRef.current
+    const taglineScroll = taglineScrollRef.current
 
-    if (!shell || !container || !video || !overlay || !content) return
+    if (!shell || !container || !video || !tagline || !taglineScroll) return
 
-    // --- Initial State (gsap.set) ---
-    // Hide content elements before scroll progress starts
-    gsap.set([
-      '.hero-eyebrow',
-      '.hero-word',
-      '.hero-desc',
-      '.hero-cta-btn',
-      '.hero-trust-item'
-    ], { opacity: 0 })
+    // --- Initial State Configuration (0% / Initial Load) ---
+    // Display ONLY: background, navbar, center tagline, scroll indicator
+    gsap.set(tagline, { opacity: 1, y: 0 })
+    gsap.set(taglineScroll, { opacity: 1, y: 0 })
+    gsap.set(video, { scale: 1.0, y: 0 })
 
-    gsap.set([
-      '.hero-eyebrow',
-      '.hero-desc',
-      '.hero-cta-btn',
-      '.hero-trust-item'
-    ], { y: 20 })
+    // Hide marketing hero content until scrolled
+    gsap.set('.hero-eyebrow', { opacity: 0, y: 20 })
+    gsap.set('.hero-word', { y: '115%' }) // Offscreen inside overflow:hidden mask
+    gsap.set('.hero-desc', { opacity: 0, y: 20 })
+    gsap.set('.hero-cta-btn', { opacity: 0, y: 20, scale: 0.92 })
+    gsap.set('.hero-trust-item', { opacity: 0, y: 15 })
 
-    gsap.set('.hero-word', { y: 40 })
-    gsap.set(scrollCue, { opacity: 1 })
-
-    // --- Scrubbed Scroll Animation ---
+    // --- GSAP ScrollTrigger Story Timeline ---
+    // Pinned scroll distance reduced to 180% of viewport height for rapid but cinematic pacing
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: shell,
         start: 'top top',
-        end: '+=200%',
+        end: '+=180%',
         pin: container,
         pinSpacing: true,
-        scrub: 0.5,
+        scrub: 0.5, // Ultra-responsive scroll tracking
       }
     })
 
-    // Fade out scroll cue early
-    tl.to(scrollCue, { opacity: 0, duration: 0.8, ease: 'power1.out' }, 0)
+    // 0% - 100%: Atmospheric background video zoom & parallax movement
+    tl.to(video, {
+      scale: 1.12,
+      y: -40,
+      ease: 'none',
+      duration: 10
+    }, 0)
 
-    // Parallax background video across the entire timeline
-    tl.to(video, { y: -80, ease: 'none', duration: 10 }, 0)
+    // 0% - 8% (0.0 to 0.8): Scroll indicator begins fading naturally
+    tl.to(taglineScroll, {
+      opacity: 0,
+      y: -12,
+      duration: 0.8,
+      ease: 'power1.out'
+    }, 0)
 
-    // Eyebrow badge
-    tl.to('.hero-eyebrow', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, 0.8)
+    // 0% - 15% (0.0 to 1.5): Center tagline moves upward and disappears completely
+    tl.to(tagline, {
+      opacity: 0,
+      y: -35,
+      duration: 1.5,
+      ease: 'power1.inOut'
+    }, 0)
 
-    // H1 Line 1 words
-    const line1Words = gsap.utils.toArray('.hero-word-line1')
-    tl.to(line1Words, {
+    // 15% - 23% (1.5 to 2.3): Hero badge (eyebrow) fades in
+    tl.to('.hero-eyebrow', {
       opacity: 1,
       y: 0,
-      stagger: 0.15,
       duration: 0.8,
       ease: 'power2.out'
     }, 1.5)
 
-    // H1 Line 2 words
+    // 20% - 32% (2.0 to 3.2): Headline Line 1 word-by-word mask reveal ("One Smart Collar.")
+    const line1Words = gsap.utils.toArray('.hero-word-line1')
+    tl.to(line1Words, {
+      y: '0%',
+      stagger: 0.1,
+      duration: 0.9,
+      ease: 'power3.out'
+    }, 2.0)
+
+    // 30% - 42% (3.0 to 4.2): Headline Line 2 word-by-word mask reveal ("Infinite Possibilities.")
     const line2Words = gsap.utils.toArray('.hero-word-line2')
     tl.to(line2Words, {
+      y: '0%',
+      stagger: 0.1,
+      duration: 0.9,
+      ease: 'power3.out'
+    }, 3.0)
+
+    // 40% - 52% (4.0 to 5.2): Description fades in with smooth upward motion
+    tl.to('.hero-desc', {
       opacity: 1,
       y: 0,
-      stagger: 0.15,
-      duration: 0.8,
+      duration: 1.0,
       ease: 'power2.out'
-    }, 2.8)
+    }, 4.0)
 
-    // Description
-    tl.to('.hero-desc', { opacity: 1, y: 0, duration: 1.3, ease: 'power2.out' }, 4.2)
-
-    // CTAs
+    // 48% - 60% (4.8 to 6.0): CTA buttons scale and fade in
     tl.to('.hero-cta-btn', {
       opacity: 1,
       y: 0,
-      stagger: 0.15,
-      duration: 1.3,
-      ease: 'power2.out'
-    }, 5.5)
+      scale: 1,
+      stagger: 0.12,
+      duration: 1.0,
+      ease: 'back.out(1.2)'
+    }, 4.8)
 
-    // Trust items
+    // 56% - 68% (5.6 to 6.8): Subtle trust indicators appear sequentially
     const trustItems = gsap.utils.toArray('.hero-trust-item')
     tl.to(trustItems, {
       opacity: 1,
       y: 0,
-      stagger: 0.12,
-      duration: 1.2,
+      stagger: 0.08,
+      duration: 0.9,
       ease: 'power2.out'
-    }, 6.8)
+    }, 5.6)
+
   }, { scope: shellRef })
 
   return (
@@ -161,13 +181,34 @@ export default function HeroSection() {
         </div>
 
         {/* Layer 2: Gradient overlay */}
-        <div ref={overlayRef} className="hero-overlay" aria-hidden="true" />
+        <div className="hero-overlay" aria-hidden="true" />
 
         {/* Layer 3: Vignette */}
         <div className="hero-vignette" aria-hidden="true" />
 
-        {/* Layer 4: Content */}
-        <div ref={contentRef} className="hero-content">
+        {/* Layer 4: Initial Cinematic Center Tagline */}
+        <div ref={taglineRef} className="hero-center-tagline">
+          <div className="hero-tagline-brand">
+            <img src="/assets/white-logo.svg" alt="" aria-hidden="true" className="hero-tagline-logo" />
+            <span className="hero-tagline-wordmark">HERDOS</span>
+          </div>
+          <p className="hero-tagline-text">
+            India's First AI Smart Collar<br />
+            for Sheep &amp; Goats
+          </p>
+          <motion.div
+            ref={taglineScrollRef}
+            className="hero-tagline-scroll"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            {ICON.chevDown}
+            <span>SCROLL</span>
+          </motion.div>
+        </div>
+
+        {/* Layer 5: Main Hero Content (Progressively Revealed on Scroll) */}
+        <div className="hero-content">
           <div className="container">
             <div className="hero-text-block">
               {/* Eyebrow */}
@@ -176,7 +217,7 @@ export default function HeroSection() {
                 India's First Smart Collar System for Sheep &amp; Goats
               </div>
 
-              {/* Headline */}
+              {/* Headline with mask container */}
               <h1 className="hero-h1">
                 <span className="hero-word-line">
                   <span className="hero-word hero-word-line1">One</span>{' '}
@@ -227,20 +268,7 @@ export default function HeroSection() {
             </div>
           </div>
         </div>
-
-        {/* Scroll cue */}
-        <motion.div
-          ref={scrollCueRef}
-          className="hero-scroll-cue"
-          animate={{ y: [0, 9, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-          aria-hidden="true"
-        >
-          {ICON.chevDown}
-          <span>Scroll</span>
-        </motion.div>
       </div>
     </section>
   )
 }
-

@@ -1,8 +1,10 @@
+import { useState, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { NAV } from '../../data/navigation'
 import { useSite } from '../../context/SiteContext'
-import { useScrolled } from '../../hooks'
 import MobileDrawer from './MobileDrawer'
+import { useGSAP } from '@gsap/react'
+import { gsap, ScrollTrigger } from '../../lib/gsap'
 
 const ICON = {
   chev: (
@@ -19,14 +21,168 @@ const ICON = {
 
 export default function Header() {
   const { setMobileMenuOpen } = useSite()
-  const scrolled = useScrolled(100)
+  const [scrolled, setScrolled] = useState(false)
   const { pathname } = useLocation()
+  const headerRef = useRef(null)
+
+  useGSAP(() => {
+    const header = headerRef.current
+    if (!header) return
+
+    // Clear any previous inline styles to prevent route contamination
+    gsap.set(header, { clearProps: 'all' })
+    gsap.set('.nav-cta .btn--primary', { clearProps: 'all' })
+
+    const isHome = document.body.dataset.page === 'home'
+    const mm = gsap.matchMedia()
+
+    // Trigger state toggle at 20% scroll progress (around 24px)
+    const trigger = ScrollTrigger.create({
+      trigger: document.body,
+      start: 'top top',
+      end: '+=120',
+      scrub: 0.5,
+      onUpdate: (self) => {
+        setScrolled(self.progress > 0.2)
+      },
+    })
+
+    // Animation timeline for glass morphing
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: document.body,
+        start: 'top top',
+        end: '+=120',
+        scrub: 0.5,
+      }
+    })
+
+    if (isHome) {
+      mm.add('(min-width: 768px)', () => {
+        tl.fromTo(header,
+          {
+            marginTop: '12px',
+            marginLeft: '12px',
+            marginRight: '12px',
+            borderRadius: '20px',
+            backgroundColor: 'rgba(15, 15, 15, 0)',
+            borderColor: 'rgba(255, 255, 255, 0)',
+            boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
+            backdropFilter: 'blur(0px)',
+            webkitBackdropFilter: 'blur(0px)',
+          },
+          {
+            marginTop: '20px',
+            marginLeft: '32px',
+            marginRight: '32px',
+            borderRadius: '9999px',
+            backgroundColor: 'rgba(13, 31, 18, 0.45)', // Premium brand forest green glass tint
+            borderColor: 'rgba(255, 255, 255, 0.12)',
+            boxShadow: '0 12px 40px rgba(13, 31, 18, 0.25)',
+            backdropFilter: 'blur(16px)',
+            webkitBackdropFilter: 'blur(16px)',
+            ease: 'none',
+          }
+        )
+      })
+
+      mm.add('(max-width: 767px)', () => {
+        tl.fromTo(header,
+          {
+            marginTop: '0px',
+            marginLeft: '0px',
+            marginRight: '0px',
+            borderRadius: '0px',
+            backgroundColor: 'rgba(15, 15, 15, 0)',
+            borderColor: 'rgba(255, 255, 255, 0)',
+            boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
+            backdropFilter: 'blur(0px)',
+            webkitBackdropFilter: 'blur(0px)',
+          },
+          {
+            marginTop: '12px',
+            marginLeft: '16px',
+            marginRight: '16px',
+            borderRadius: '9999px',
+            backgroundColor: 'rgba(13, 31, 18, 0.45)', // Premium brand forest green glass tint
+            borderColor: 'rgba(255, 255, 255, 0.12)',
+            boxShadow: '0 10px 30px rgba(13, 31, 18, 0.25)',
+            backdropFilter: 'blur(16px)',
+            webkitBackdropFilter: 'blur(16px)',
+            ease: 'none',
+          }
+        )
+      })
+    } else {
+      mm.add('(min-width: 768px)', () => {
+        tl.fromTo(header,
+          {
+            marginTop: '0px',
+            marginLeft: '0px',
+            marginRight: '0px',
+            borderRadius: '0px',
+            backgroundColor: 'rgba(245, 245, 245, 0)',
+            borderColor: 'rgba(245, 245, 245, 0)',
+            boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
+            backdropFilter: 'blur(0px)',
+            webkitBackdropFilter: 'blur(0px)',
+          },
+          {
+            marginTop: '16px',
+            marginLeft: '24px',
+            marginRight: '24px',
+            borderRadius: '9999px',
+            backgroundColor: 'rgba(245, 245, 245, 0.85)',
+            borderColor: 'rgba(13, 31, 18, 0.08)',
+            boxShadow: '0 8px 32px rgba(13, 31, 18, 0.08)',
+            backdropFilter: 'blur(16px)',
+            webkitBackdropFilter: 'blur(16px)',
+            ease: 'none',
+          }
+        )
+      })
+
+      mm.add('(max-width: 767px)', () => {
+        tl.fromTo(header,
+          {
+            marginTop: '0px',
+            marginLeft: '0px',
+            marginRight: '0px',
+            borderRadius: '0px',
+            backgroundColor: 'rgba(245, 245, 245, 0)',
+            borderColor: 'rgba(245, 245, 245, 0)',
+            boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
+            backdropFilter: 'blur(0px)',
+            webkitBackdropFilter: 'blur(0px)',
+          },
+          {
+            marginTop: '8px',
+            marginLeft: '12px',
+            marginRight: '12px',
+            borderRadius: '9999px',
+            backgroundColor: 'rgba(245, 245, 245, 0.85)',
+            borderColor: 'rgba(13, 31, 18, 0.08)',
+            boxShadow: '0 8px 32px rgba(13, 31, 18, 0.08)',
+            backdropFilter: 'blur(16px)',
+            webkitBackdropFilter: 'blur(16px)',
+            ease: 'none',
+          }
+        )
+      })
+    }
+
+    return () => {
+      trigger.kill()
+      tl.kill()
+      mm.revert()
+    }
+  }, [pathname])
 
   return (
     <>
       <div data-site-header="">
         {/* Main Navbar */}
-        <header className={`nav site-header ${scrolled ? 'scrolled' : ''}`}>
+        <header ref={headerRef} className={`nav site-header ${scrolled ? 'scrolled' : ''}`}>
           <div className="container">
             {/* Brand Logo */}
             <Link to="/" className="brand">
