@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from 'react'
+import { useEffect, useRef, useCallback, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { gsap } from './lib/gsap'
@@ -85,11 +85,85 @@ function AnimatedRoutes() {
   )
 }
 
+/**
+ * LayoutStabilizer — fires ScrollTrigger.refresh() once the layout is
+ * genuinely stable, not just when React has rendered.
+ *
+ * Three triggers:
+ * 1. document.fonts.ready  — web fonts paint before measurements.
+ * 2. window 'load'         — images/videos parsed on initial load.
+ * 3. MutationObserver      — watches for images/videos injected by lazy-
+ *    loaded route components and refreshes after each batch settles.
+ *
+ * A 300 ms debounce prevents rapid-fire refreshes during page transitions.
+ */
+function LayoutStabilizer() {
+  const timerRef = useRef(null)
+  const { pathname } = useLocation()
+
+  const scheduleRefresh = useCallback((label) => {
+    if (timerRef.current) clearTimeout(timerRef.current)
+    timerRef.current = setTimeout(() => {
+      ScrollTrigger.refresh(true)
+    }, 300)
+  }, [])
+
+  // Refresh on every route change (handles lazy-loaded page transitions)
+  useEffect(() => {
+    scheduleRefresh('route')
+  }, [pathname, scheduleRefresh])
+
+  useEffect(() => {
+    // 1. Refresh once fonts are ready
+    document.fonts.ready.then(() => scheduleRefresh('fonts'))
+
+    // 2. Refresh on window load (initial images/videos)
+    const onLoad = () => scheduleRefresh('window-load')
+    if (document.readyState === 'complete') {
+      scheduleRefresh('already-loaded')
+    } else {
+      window.addEventListener('load', onLoad, { once: true })
+    }
+
+    // 3. Watch for media injected by lazy-loaded route components
+    const mo = new MutationObserver((mutations) => {
+      const hasMedia = mutations.some(m =>
+        [...m.addedNodes].some(n => {
+          if (n.nodeType !== 1) return false
+          return (
+            n.tagName === 'IMG' ||
+            n.tagName === 'VIDEO' ||
+            n.querySelector?.('img, video')
+          )
+        })
+      )
+      if (!hasMedia) return
+
+      // Wait for images to decode before refreshing
+      const imgs = [...document.querySelectorAll('img')]
+      Promise.allSettled(imgs.map(img => img.decode?.().catch(() => {}))).then(
+        () => scheduleRefresh('mutation-media')
+      )
+    })
+
+    mo.observe(document.body, { childList: true, subtree: true })
+
+    return () => {
+      window.removeEventListener('load', onLoad)
+      mo.disconnect()
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [scheduleRefresh])
+
+  return null
+}
+
 function AppContent() {
   return (
     <>
       <SEO />
       <HashScrollObserver />
+      <LayoutStabilizer />
       <PageShell>
         <AnimatedRoutes />
       </PageShell>

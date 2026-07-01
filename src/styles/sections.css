@@ -19,8 +19,8 @@
 .hero-container {
   position: relative;
   width: 100%;
-  min-height: calc(100svh - (var(--hero-pad) * 2));
   min-height: calc(100vh - (var(--hero-pad) * 2));
+  min-height: calc(100svh - (var(--hero-pad) * 2));
   border-radius: var(--hero-radius);
   overflow: hidden;
   background: #0D1F12;

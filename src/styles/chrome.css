@@ -305,8 +305,18 @@ body[data-page="home"] [data-site-header] {
 }
 
 body[data-page="home"] .site-header {
-  border: 1px solid transparent;
-  /* GSAP ScrollTrigger controls layout and transitions */
+  /* CSS initial state mirrors GSAP ScrollTrigger's fromTo starting values.
+     This prevents a flash/jump where the header starts at margin:0 and
+     snaps to the padded state when GSAP initialises. */
+  margin-top: var(--hero-pad);
+  margin-left: var(--hero-pad);
+  margin-right: var(--hero-pad);
+  border-radius: var(--hero-radius);
+  background-color: rgba(15, 15, 15, 0);
+  border: 1px solid rgba(255, 255, 255, 0);
+  box-shadow: none;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
 }
 
 /* Ensure contrast in scrolled state on Home page (keep white branding/nav links) */
