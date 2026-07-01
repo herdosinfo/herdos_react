@@ -36,144 +36,164 @@ export default function Header() {
     const isHome = document.body.dataset.page === 'home'
     const mm = gsap.matchMedia()
 
-    // Trigger state toggle at 20% scroll progress (around 24px)
-    const trigger = ScrollTrigger.create({
-      trigger: document.body,
-      start: 'top top',
-      end: '+=120',
-      scrub: 0.5,
-      onUpdate: (self) => {
-        setScrolled(self.progress > 0.2)
-      },
-    })
+    let triggerInstance = null
+    let timelineInstance = null
+    let rafId = null
 
-    // Animation timeline for glass morphing
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: document.body,
-        start: 'top top',
-        end: '+=120',
-        scrub: 0.5,
+    const setupScrollTriggers = () => {
+      const hero = document.querySelector('.hero-shell')
+      if (isHome && !hero) {
+        // Retry on next animation frame if home route component is still lazy loading
+        rafId = requestAnimationFrame(setupScrollTriggers)
+        return
       }
-    })
 
-    if (isHome) {
-      mm.add('(min-width: 768px)', () => {
-        tl.fromTo(header,
-          {
-            marginTop: '12px',
-            marginLeft: '12px',
-            marginRight: '12px',
-            borderRadius: '20px',
-            backgroundColor: 'rgba(15, 15, 15, 0)',
-            borderColor: 'rgba(255, 255, 255, 0)',
-            boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
-            backdropFilter: 'blur(0px)',
-            webkitBackdropFilter: 'blur(0px)',
-          },
-          {
-            marginTop: '20px',
-            marginLeft: '32px',
-            marginRight: '32px',
-            borderRadius: '9999px',
-            backgroundColor: 'rgba(13, 31, 18, 0.45)', // Premium brand forest green glass tint
-            borderColor: 'rgba(255, 255, 255, 0.12)',
-            boxShadow: '0 12px 40px rgba(13, 31, 18, 0.25)',
-            backdropFilter: 'blur(16px)',
-            webkitBackdropFilter: 'blur(16px)',
-            ease: 'none',
-          }
-        )
+      const triggerEl = isHome ? hero : document.body
+      const startVal = isHome ? '85% top' : 'top top'
+      const endVal = isHome ? 'bottom top' : '+=120'
+
+      // Trigger state toggle
+      triggerInstance = ScrollTrigger.create({
+        trigger: triggerEl,
+        start: startVal,
+        end: endVal,
+        scrub: 0.5,
+        onUpdate: (self) => {
+          setScrolled(self.progress > 0.1)
+        },
       })
 
-      mm.add('(max-width: 767px)', () => {
-        tl.fromTo(header,
-          {
-            marginTop: '0px',
-            marginLeft: '0px',
-            marginRight: '0px',
-            borderRadius: '0px',
-            backgroundColor: 'rgba(15, 15, 15, 0)',
-            borderColor: 'rgba(255, 255, 255, 0)',
-            boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
-            backdropFilter: 'blur(0px)',
-            webkitBackdropFilter: 'blur(0px)',
-          },
-          {
-            marginTop: '12px',
-            marginLeft: '16px',
-            marginRight: '16px',
-            borderRadius: '9999px',
-            backgroundColor: 'rgba(13, 31, 18, 0.45)', // Premium brand forest green glass tint
-            borderColor: 'rgba(255, 255, 255, 0.12)',
-            boxShadow: '0 10px 30px rgba(13, 31, 18, 0.25)',
-            backdropFilter: 'blur(16px)',
-            webkitBackdropFilter: 'blur(16px)',
-            ease: 'none',
-          }
-        )
-      })
-    } else {
-      mm.add('(min-width: 768px)', () => {
-        tl.fromTo(header,
-          {
-            marginTop: '0px',
-            marginLeft: '0px',
-            marginRight: '0px',
-            borderRadius: '0px',
-            backgroundColor: 'rgba(245, 245, 245, 0)',
-            borderColor: 'rgba(245, 245, 245, 0)',
-            boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
-            backdropFilter: 'blur(0px)',
-            webkitBackdropFilter: 'blur(0px)',
-          },
-          {
-            marginTop: '16px',
-            marginLeft: '24px',
-            marginRight: '24px',
-            borderRadius: '9999px',
-            backgroundColor: 'rgba(245, 245, 245, 0.85)',
-            borderColor: 'rgba(13, 31, 18, 0.08)',
-            boxShadow: '0 8px 32px rgba(13, 31, 18, 0.08)',
-            backdropFilter: 'blur(16px)',
-            webkitBackdropFilter: 'blur(16px)',
-            ease: 'none',
-          }
-        )
+      // Animation timeline for glass morphing
+      timelineInstance = gsap.timeline({
+        scrollTrigger: {
+          trigger: triggerEl,
+          start: startVal,
+          end: endVal,
+          scrub: 0.5,
+        }
       })
 
-      mm.add('(max-width: 767px)', () => {
-        tl.fromTo(header,
-          {
-            marginTop: '0px',
-            marginLeft: '0px',
-            marginRight: '0px',
-            borderRadius: '0px',
-            backgroundColor: 'rgba(245, 245, 245, 0)',
-            borderColor: 'rgba(245, 245, 245, 0)',
-            boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
-            backdropFilter: 'blur(0px)',
-            webkitBackdropFilter: 'blur(0px)',
-          },
-          {
-            marginTop: '8px',
-            marginLeft: '12px',
-            marginRight: '12px',
-            borderRadius: '9999px',
-            backgroundColor: 'rgba(245, 245, 245, 0.85)',
-            borderColor: 'rgba(13, 31, 18, 0.08)',
-            boxShadow: '0 8px 32px rgba(13, 31, 18, 0.08)',
-            backdropFilter: 'blur(16px)',
-            webkitBackdropFilter: 'blur(16px)',
-            ease: 'none',
-          }
-        )
-      })
+      if (isHome) {
+        mm.add('(min-width: 768px)', () => {
+          timelineInstance.fromTo(header,
+            {
+              marginTop: 'var(--hero-pad)',
+              marginLeft: 'var(--hero-pad)',
+              marginRight: 'var(--hero-pad)',
+              borderRadius: 'var(--hero-radius)',
+              backgroundColor: 'rgba(15, 15, 15, 0)',
+              borderColor: 'rgba(255, 255, 255, 0)',
+              boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
+              backdropFilter: 'blur(0px)',
+              webkitBackdropFilter: 'blur(0px)',
+            },
+            {
+              marginTop: '20px',
+              marginLeft: '32px',
+              marginRight: '32px',
+              borderRadius: '9999px',
+              backgroundColor: 'rgba(13, 31, 18, 0.45)', // Premium brand forest green glass tint
+              borderColor: 'rgba(255, 255, 255, 0.12)',
+              boxShadow: '0 12px 40px rgba(13, 31, 18, 0.25)',
+              backdropFilter: 'blur(16px)',
+              webkitBackdropFilter: 'blur(16px)',
+              ease: 'none',
+            }
+          )
+        })
+
+        mm.add('(max-width: 767px)', () => {
+          timelineInstance.fromTo(header,
+            {
+              marginTop: 'var(--hero-pad)',
+              marginLeft: 'var(--hero-pad)',
+              marginRight: 'var(--hero-pad)',
+              borderRadius: 'var(--hero-radius)',
+              backgroundColor: 'rgba(15, 15, 15, 0)',
+              borderColor: 'rgba(255, 255, 255, 0)',
+              boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
+              backdropFilter: 'blur(0px)',
+              webkitBackdropFilter: 'blur(0px)',
+            },
+            {
+              marginTop: '12px',
+              marginLeft: '16px',
+              marginRight: '16px',
+              borderRadius: '9999px',
+              backgroundColor: 'rgba(13, 31, 18, 0.45)', // Premium brand forest green glass tint
+              borderColor: 'rgba(255, 255, 255, 0.12)',
+              boxShadow: '0 10px 30px rgba(13, 31, 18, 0.25)',
+              backdropFilter: 'blur(16px)',
+              webkitBackdropFilter: 'blur(16px)',
+              ease: 'none',
+            }
+          )
+        })
+      } else {
+        mm.add('(min-width: 768px)', () => {
+          timelineInstance.fromTo(header,
+            {
+              marginTop: '0px',
+              marginLeft: '0px',
+              marginRight: '0px',
+              borderRadius: '0px',
+              backgroundColor: 'rgba(245, 245, 245, 0)',
+              borderColor: 'rgba(245, 245, 245, 0)',
+              boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
+              backdropFilter: 'blur(0px)',
+              webkitBackdropFilter: 'blur(0px)',
+            },
+            {
+              marginTop: '16px',
+              marginLeft: '24px',
+              marginRight: '24px',
+              borderRadius: '9999px',
+              backgroundColor: 'rgba(245, 245, 245, 0.85)',
+              borderColor: 'rgba(13, 31, 18, 0.08)',
+              boxShadow: '0 8px 32px rgba(13, 31, 18, 0.08)',
+              backdropFilter: 'blur(16px)',
+              webkitBackdropFilter: 'blur(16px)',
+              ease: 'none',
+            }
+          )
+        })
+
+        mm.add('(max-width: 767px)', () => {
+          timelineInstance.fromTo(header,
+            {
+              marginTop: '0px',
+              marginLeft: '0px',
+              marginRight: '0px',
+              borderRadius: '0px',
+              backgroundColor: 'rgba(245, 245, 245, 0)',
+              borderColor: 'rgba(245, 245, 245, 0)',
+              boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
+              backdropFilter: 'blur(0px)',
+              webkitBackdropFilter: 'blur(0px)',
+            },
+            {
+              marginTop: '8px',
+              marginLeft: '12px',
+              marginRight: '12px',
+              borderRadius: '9999px',
+              backgroundColor: 'rgba(245, 245, 245, 0.85)',
+              borderColor: 'rgba(13, 31, 18, 0.08)',
+              boxShadow: '0 8px 32px rgba(13, 31, 18, 0.08)',
+              backdropFilter: 'blur(16px)',
+              webkitBackdropFilter: 'blur(16px)',
+              ease: 'none',
+            }
+          )
+        })
+      }
     }
 
+    setupScrollTriggers()
+
     return () => {
-      trigger.kill()
-      tl.kill()
+      if (rafId) cancelAnimationFrame(rafId)
+      if (triggerInstance) triggerInstance.kill()
+      if (timelineInstance) timelineInstance.kill()
       mm.revert()
     }
   }, [pathname])

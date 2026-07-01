@@ -7,44 +7,42 @@
 
 /* ---- 1. HERO — Cinematic Full-Viewport ---- */
 
-/* Outer Forest shell */
+/* Outer Forest shell — now styled as warm off-white canvas surrounding the hero */
 .hero-shell {
-  background: #0D1F12;
-  padding: 12px;
+  background: var(--cream);
+  padding: var(--hero-pad);
   position: relative;
   width: 100%;
 }
-@media (max-width: 767px) {
-  .hero-shell {
-    padding: 0;
-  }
-}
 
-/* Inner contained card */
+/* Inner contained card — styled as a premium floating showcase card */
 .hero-container {
   position: relative;
   width: 100%;
-  min-height: calc(100svh - 24px);
-  min-height: calc(100vh - 24px);
-  border-radius: 20px;
+  min-height: calc(100svh - (var(--hero-pad) * 2));
+  min-height: calc(100vh - (var(--hero-pad) * 2));
+  border-radius: var(--hero-radius);
   overflow: hidden;
   background: #0D1F12;
   color: #fff;
-}
-@media (max-width: 767px) {
-  .hero-container {
-    min-height: 100svh;
-    min-height: 100vh;
-    border-radius: 0;
-  }
+  
+  /* Soft premium shadows for visual floating/depth */
+  box-shadow: 
+    0 24px 64px rgba(13, 31, 18, 0.08),
+    0 4px 16px rgba(13, 31, 18, 0.04);
+    
+  /* Subtle border to improve visual separation from page */
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-/* Background video wrapper — handles Ken Burns */
+/* Background video wrapper — handles Ken Burns + premium cinematic color grading */
 .hero-bg-wrap {
   position: absolute;
   inset: 0;
   z-index: 0;
   overflow: hidden;
+  /* Premium color grading: boost contrast, highlights, and dynamic range naturally */
+  filter: contrast(1.08) brightness(1.02) saturate(1.05);
 }
 .hero-bg-video {
   position: absolute;
@@ -53,12 +51,27 @@
   height: 100%;
   object-fit: cover;
   object-position: center 30%;
-  will-change: transform;
+  /* opacity & filter added for GPU-accelerated crossfade tweens */
+  will-change: transform, opacity, filter;
 }
 
-/* Background video motion handled by GSAP ScrollTrigger timeline */
+/* Hero image layer — initially hidden (opacity: 0 set by GSAP),
+   crossfades in when video reaches its final frame.              */
+.hero-bg-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;                    /* same stacking layer as .hero-bg-video */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;   /* must match .hero-bg-video for seamless blend */
+  will-change: transform, opacity, filter;
+  pointer-events: none;
+}
 
-/* Gradient overlay — 4-stop directional layout */
+/* Background video/image motion handled by GSAP ScrollTrigger timeline */
+
+/* Neutral charcoal gradient overlay — left side darker for readability, right side clear */
 .hero-overlay {
   position: absolute;
   inset: 0;
@@ -66,26 +79,26 @@
   pointer-events: none;
   background: linear-gradient(
     105deg,
-    rgba(13, 31, 18, 0.92) 0%,
-    rgba(13, 31, 18, 0.75) 35%,
-    rgba(13, 31, 18, 0.40) 70%,
-    rgba(13, 31, 18, 0.15) 100%
+    rgba(15, 15, 15, 0.85) 0%,
+    rgba(15, 15, 15, 0.60) 35%,
+    rgba(15, 15, 15, 0.20) 70%,
+    rgba(15, 15, 15, 0) 100%
   );
 }
-/* Mobile: bottom-weighted vertical gradient */
+/* Mobile: bottom-weighted vertical neutral gradient for center-aligned text */
 @media (max-width: 767px) {
   .hero-overlay {
     background: linear-gradient(
       to top,
-      rgba(13, 31, 18, 0.96) 0%,
-      rgba(13, 31, 18, 0.80) 50%,
-      rgba(13, 31, 18, 0.40) 80%,
-      rgba(13, 31, 18, 0.15) 100%
+      rgba(15, 15, 15, 0.90) 0%,
+      rgba(15, 15, 15, 0.65) 45%,
+      rgba(15, 15, 15, 0.20) 80%,
+      rgba(15, 15, 15, 0) 100%
     );
   }
 }
 
-/* Vignette layer for atmospheric depth */
+/* Neutral vignette layer for professional photographic depth */
 .hero-vignette {
   position: absolute;
   inset: 0;
@@ -93,9 +106,9 @@
   pointer-events: none;
   background: radial-gradient(
     circle at center,
-    transparent 20%,
-    rgba(13, 31, 18, 0.3) 60%,
-    rgba(13, 31, 18, 0.75) 100%
+    transparent 35%,
+    rgba(15, 15, 15, 0.15) 70%,
+    rgba(15, 15, 15, 0.55) 100%
   );
 }
 

@@ -15,13 +15,34 @@
   --sage-200:      #B6D0C0;  /* hairlines on light */
 
   /* Neutrals */
-  --cream:         #F5F5F5;  /* page bg */
+  --cream:         #F7F7F3;  /* page bg (warm off-white) */
   --paper:         #FFFFFF;  /* cards */
   --ink:           #0D1F12;  /* body text */
   --muted:         #4A5E50;  /* secondary text */
   --faint:         #7A8C82;  /* tertiary */
   --border:        rgba(13, 31, 18, 0.10);
   --border-soft:   rgba(13, 31, 18, 0.06);
+
+  /* Hero Section spacing / floating properties */
+  --hero-pad:      24px;
+  --hero-radius:   24px;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --hero-pad:    16px;
+    --hero-radius: 16px;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --hero-pad:    32px;
+    --hero-radius: 28px;
+  }
+}
+
+:root {
 
   /* Accent + status */
   --gold:          #FCBD16;  /* badges/pills + big stat numbers */
