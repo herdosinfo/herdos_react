@@ -85,7 +85,6 @@ export default function Header() {
               borderColor: 'rgba(255, 255, 255, 0)',
               boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
               backdropFilter: 'blur(0px)',
-              webkitBackdropFilter: 'blur(0px)',
             },
             {
               marginTop: '20px',
@@ -96,7 +95,6 @@ export default function Header() {
               borderColor: 'rgba(255, 255, 255, 0.12)',
               boxShadow: '0 12px 40px rgba(13, 31, 18, 0.25)',
               backdropFilter: 'blur(16px)',
-              webkitBackdropFilter: 'blur(16px)',
               ease: 'none',
             }
           )
@@ -113,7 +111,6 @@ export default function Header() {
               borderColor: 'rgba(255, 255, 255, 0)',
               boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
               backdropFilter: 'blur(0px)',
-              webkitBackdropFilter: 'blur(0px)',
             },
             {
               marginTop: '12px',
@@ -124,7 +121,6 @@ export default function Header() {
               borderColor: 'rgba(255, 255, 255, 0.12)',
               boxShadow: '0 10px 30px rgba(13, 31, 18, 0.25)',
               backdropFilter: 'blur(16px)',
-              webkitBackdropFilter: 'blur(16px)',
               ease: 'none',
             }
           )
@@ -141,7 +137,6 @@ export default function Header() {
               borderColor: 'rgba(245, 245, 245, 0)',
               boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
               backdropFilter: 'blur(0px)',
-              webkitBackdropFilter: 'blur(0px)',
             },
             {
               marginTop: '16px',
@@ -152,7 +147,6 @@ export default function Header() {
               borderColor: 'rgba(13, 31, 18, 0.08)',
               boxShadow: '0 8px 32px rgba(13, 31, 18, 0.08)',
               backdropFilter: 'blur(16px)',
-              webkitBackdropFilter: 'blur(16px)',
               ease: 'none',
             }
           )
@@ -169,7 +163,6 @@ export default function Header() {
               borderColor: 'rgba(245, 245, 245, 0)',
               boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
               backdropFilter: 'blur(0px)',
-              webkitBackdropFilter: 'blur(0px)',
             },
             {
               marginTop: '8px',
@@ -180,7 +173,6 @@ export default function Header() {
               borderColor: 'rgba(13, 31, 18, 0.08)',
               boxShadow: '0 8px 32px rgba(13, 31, 18, 0.08)',
               backdropFilter: 'blur(16px)',
-              webkitBackdropFilter: 'blur(16px)',
               ease: 'none',
             }
           )

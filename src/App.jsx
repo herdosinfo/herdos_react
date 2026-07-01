@@ -1,15 +1,12 @@
 import { useEffect, useRef, useCallback, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { gsap } from './lib/gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { gsap, ScrollTrigger } from './lib/gsap'
 import Lenis from 'lenis'
 import { SiteProvider } from './context/SiteContext'
 import PageShell from './components/layout/PageShell'
 import MobileCtaBar from './components/common/MobileCtaBar'
 import SEO from './components/common/SEO'
-
-gsap.registerPlugin(ScrollTrigger)
 
 // Lazy load all pages for code splitting
 const HomePage     = lazy(() => import('./pages/HomePage'))
