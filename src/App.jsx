@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, lazy, Suspense } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { gsap, ScrollTrigger } from './lib/gsap'
@@ -83,84 +83,103 @@ function AnimatedRoutes() {
 }
 
 /**
- * LayoutStabilizer — fires ScrollTrigger.refresh() once the layout is
- * genuinely stable, not just when React has rendered.
+ * RouteRefresh — fires ScrollTrigger.refresh() once per route change
+ * with a 300 ms debounce to let the incoming page finish its layout.
  *
- * Three triggers:
- * 1. document.fonts.ready  — web fonts paint before measurements.
- * 2. window 'load'         — images/videos parsed on initial load.
- * 3. MutationObserver      — watches for images/videos injected by lazy-
- *    loaded route components and refreshes after each batch settles.
- *
- * A 300 ms debounce prevents rapid-fire refreshes during page transitions.
+ * Excludes the Home page, where the Hero section handles its own single
+ * refresh at the end of its staged loading pipeline.
  */
-function LayoutStabilizer() {
-  const timerRef = useRef(null)
+function RouteRefresh() {
   const { pathname } = useLocation()
 
-  const scheduleRefresh = useCallback((label) => {
-    if (timerRef.current) clearTimeout(timerRef.current)
-    timerRef.current = setTimeout(() => {
-      ScrollTrigger.refresh(true)
+  useEffect(() => {
+    const isHome = pathname === '/' || pathname === '/home/'
+    if (isHome) return // Managed by Hero Controller
+
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh()
     }, 300)
-  }, [])
-
-  // Refresh on every route change (handles lazy-loaded page transitions)
-  useEffect(() => {
-    scheduleRefresh('route')
-  }, [pathname, scheduleRefresh])
-
-  useEffect(() => {
-    // 1. Refresh once fonts are ready
-    document.fonts.ready.then(() => scheduleRefresh('fonts'))
-
-    // 2. Refresh on window load (initial images/videos)
-    const onLoad = () => scheduleRefresh('window-load')
-    if (document.readyState === 'complete') {
-      scheduleRefresh('already-loaded')
-    } else {
-      window.addEventListener('load', onLoad, { once: true })
-    }
-
-    // 3. Watch for media injected by lazy-loaded route components
-    const mo = new MutationObserver((mutations) => {
-      const hasMedia = mutations.some(m =>
-        [...m.addedNodes].some(n => {
-          if (n.nodeType !== 1) return false
-          return (
-            n.tagName === 'IMG' ||
-            n.tagName === 'VIDEO' ||
-            n.querySelector?.('img, video')
-          )
-        })
-      )
-      if (!hasMedia) return
-
-      // Wait for images to decode before refreshing
-      const imgs = [...document.querySelectorAll('img')]
-      Promise.allSettled(imgs.map(img => img.decode?.().catch(() => {}))).then(
-        () => scheduleRefresh('mutation-media')
-      )
-    })
-
-    mo.observe(document.body, { childList: true, subtree: true })
-
-    return () => {
-      window.removeEventListener('load', onLoad)
-      mo.disconnect()
-      if (timerRef.current) clearTimeout(timerRef.current)
-    }
-  }, [scheduleRefresh])
+    return () => clearTimeout(timer)
+  }, [pathname])
 
   return null
 }
 
 function AppContent() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    let lenisInstance = null
+
+    const initLenis = () => {
+      if (lenisInstance) return
+
+      // Initialise Lenis smooth scroll
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 2,
+      })
+
+      window.lenis = lenis
+      lenisInstance = lenis
+
+      // Wire Lenis to GSAP ScrollTrigger
+      lenis.on('scroll', ScrollTrigger.update)
+
+      // Start GSAP Ticker bindings
+      gsap.ticker.add(rafCb)
+      gsap.ticker.lagSmoothing(0)
+
+      // Trigger initial update to sync states
+      ScrollTrigger.update()
+    }
+
+    const rafCb = (time) => {
+      if (lenisInstance) {
+        lenisInstance.raf(time * 1000)
+      }
+    }
+
+    const destroyLenis = () => {
+      if (lenisInstance) {
+        lenisInstance.destroy()
+        window.lenis = undefined
+        lenisInstance = null
+      }
+      gsap.ticker.remove(rafCb)
+    }
+
+    // Determine page state
+    const isHome = pathname === '/' || pathname === '/home/'
+
+    if (isHome) {
+      // Stage 4 / Controller 4: Wait for hero ready event before initializing Lenis
+      const handleHeroReady = () => {
+        initLenis()
+      }
+      window.addEventListener('hero:ready', handleHeroReady)
+
+      return () => {
+        window.removeEventListener('hero:ready', handleHeroReady)
+        destroyLenis()
+      }
+    } else {
+      // Non-home routes: Initialize immediately
+      initLenis()
+      return () => {
+        destroyLenis()
+      }
+    }
+  }, [pathname])
+
   return (
     <>
       <SEO />
       <HashScrollObserver />
-      <LayoutStabilizer />
+      <RouteRefresh />
       <PageShell>
         <AnimatedRoutes />
       </PageShell>
@@ -171,24 +190,6 @@ function AppContent() {
 
 function App() {
   useEffect(() => {
-    // Initialise Lenis smooth scroll
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-    })
-
-    window.lenis = lenis
-
-    // Wire Lenis to GSAP ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update)
-
-    const rafCb = (time) => lenis.raf(time * 1000)
-    gsap.ticker.add(rafCb)
-    gsap.ticker.lagSmoothing(0)
-
     // Intercept clicks on hash links for smooth scroll
     const handleGlobalClick = (e) => {
       const anchor = e.target.closest('a')
@@ -197,16 +198,16 @@ function App() {
       if (href && href.startsWith('#')) {
         e.preventDefault()
         const target = document.querySelector(href)
-        if (target) {
-          lenis.scrollTo(target, { offset: -80 })
+        if (target && window.lenis) {
+          window.lenis.scrollTo(target, { offset: -80 })
         }
       } else if (href && href.includes('#')) {
         const [path, hash] = href.split('#')
         if (path === window.location.pathname || path === '') {
           e.preventDefault()
           const target = document.querySelector('#' + hash)
-          if (target) {
-            lenis.scrollTo(target, { offset: -80 })
+          if (target && window.lenis) {
+            window.lenis.scrollTo(target, { offset: -80 })
           }
         }
       }
@@ -215,9 +216,6 @@ function App() {
     document.addEventListener('click', handleGlobalClick)
 
     return () => {
-      lenis.destroy()
-      window.lenis = undefined
-      gsap.ticker.remove(rafCb)
       document.removeEventListener('click', handleGlobalClick)
     }
   }, [])
@@ -232,4 +230,3 @@ function App() {
 }
 
 export default App
-
