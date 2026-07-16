@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function MobileCtaBar() {
   const [visible, setVisible] = useState(false)
-  const sentinel = useRef(null)
 
   useEffect(() => {
     // Show once hero section has scrolled out of view
