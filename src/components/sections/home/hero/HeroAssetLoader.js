@@ -5,6 +5,8 @@ export default class HeroAssetLoader {
     this.onReady = onReady
     this.cancelled = false
     this.rafId = null
+    this._videoTimeoutId = null
+    this._videoCleanup = null
   }
 
   load() {
@@ -17,16 +19,52 @@ export default class HeroAssetLoader {
     this.video.currentTime = 0
 
     // Stage 2: Wait for video canplaythrough, image decode, and fonts
+    //
+    // CRITICAL: The video promise must never hang forever. On production CDNs
+    // the video may load slowly, stall, or fail entirely. We add:
+    //   1. A maximum wait timeout (8 seconds)
+    //   2. Error / stalled event handlers
+    // If the video isn't ready in time, we resolve anyway — the scroll
+    // controller already handles low readyState gracefully
+    // (HeroScrollController line 90: `if (this.video.readyState >= 2)`).
+    const VIDEO_TIMEOUT_MS = 8000
+
     const videoReady = new Promise(resolve => {
+      // Already buffered (common on revisit / cache hit)
       if (this.video.readyState >= 4) {
         resolve()
-      } else {
-        const onCanPlayThrough = () => {
-          this.video.removeEventListener('canplaythrough', onCanPlayThrough)
-          resolve()
-        }
-        this.video.addEventListener('canplaythrough', onCanPlayThrough)
+        return
       }
+
+      let settled = false
+      const settle = () => {
+        if (settled) return
+        settled = true
+        cleanup()
+        resolve()
+      }
+
+      const onCanPlayThrough = () => settle()
+      const onError = () => settle()
+      const onStalled = () => settle()
+
+      this.video.addEventListener('canplaythrough', onCanPlayThrough)
+      this.video.addEventListener('error', onError)
+      this.video.addEventListener('stalled', onStalled)
+
+      // Safety timeout — resolve even if no event fires
+      this._videoTimeoutId = setTimeout(settle, VIDEO_TIMEOUT_MS)
+
+      const cleanup = () => {
+        this.video.removeEventListener('canplaythrough', onCanPlayThrough)
+        this.video.removeEventListener('error', onError)
+        this.video.removeEventListener('stalled', onStalled)
+        clearTimeout(this._videoTimeoutId)
+        this._videoTimeoutId = null
+      }
+
+      // Expose cleanup so cancel() can tear down listeners
+      this._videoCleanup = cleanup
     })
 
     const imageReady = new Promise(resolve => {
@@ -86,6 +124,11 @@ export default class HeroAssetLoader {
     if (this.rafId) {
       cancelAnimationFrame(this.rafId)
       this.rafId = null
+    }
+    // Clean up video listeners and timeout
+    if (this._videoCleanup) {
+      this._videoCleanup()
+      this._videoCleanup = null
     }
     document.documentElement.classList.remove('hero-loading')
     document.documentElement.classList.remove('layout-frozen')

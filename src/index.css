@@ -1,6 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Load the v3-style JS config so all custom theme extensions
+   (colors, fonts, shadows, radii, etc.) generate proper utilities.
+   Tailwind v4 does NOT auto-discover tailwind.config.js —
+   it must be explicitly referenced via @config. */
+@config "../tailwind.config.js";
 
 /* Lenis smooth scrolling integration */
 html.lenis {

@@ -52,6 +52,8 @@ export default function HeroSection() {
   useEffect(() => {
     let loader = null
     let scrollController = null
+    let heroReadyDispatched = false
+    let dispatchTimerId = null
 
     const startPipeline = () => {
       const video = videoRef.current
@@ -74,13 +76,22 @@ export default function HeroSection() {
             taglineScroll: taglineScrollRef.current,
             videoDuration: bounds.videoDuration,
             onReady: () => {
-              // Dispatch event to Lenis Controller (Controller 4)
-              window.dispatchEvent(new CustomEvent('hero:ready'))
-
               // Unlock body/scrolling
               document.documentElement.style.overflow = ''
               document.documentElement.classList.remove('hero-loading')
               document.documentElement.classList.remove('layout-frozen')
+
+              // Dispatch hero:ready on the NEXT macrotask so that all sibling
+              // useEffect hooks (Header, AppContent/Lenis) have had a chance
+              // to attach their listeners. This eliminates the race condition
+              // where cached assets resolve the pipeline synchronously within
+              // a single rAF before other effects run.
+              if (!heroReadyDispatched) {
+                heroReadyDispatched = true
+                dispatchTimerId = setTimeout(() => {
+                  window.dispatchEvent(new CustomEvent('hero:ready'))
+                }, 0)
+              }
             }
           })
           scrollController.init()
@@ -92,6 +103,11 @@ export default function HeroSection() {
     startPipeline()
 
     return () => {
+      // Cancel pending hero:ready dispatch
+      if (dispatchTimerId) {
+        clearTimeout(dispatchTimerId)
+        dispatchTimerId = null
+      }
       if (loader) {
         loader.cancel()
         loader = null

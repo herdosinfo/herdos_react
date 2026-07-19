@@ -156,13 +156,32 @@ function AppContent() {
     const isHome = pathname === '/' || pathname === '/home/'
 
     if (isHome) {
-      // Stage 4 / Controller 4: Wait for hero ready event before initializing Lenis
+      // Stage 4 / Controller 4: Wait for hero ready event before initializing Lenis.
+      // Uses { once: true } so the listener auto-removes after first fire.
+      let safetyTimerId = null
+
       const handleHeroReady = () => {
+        if (safetyTimerId) {
+          clearTimeout(safetyTimerId)
+        }
         initLenis()
       }
-      window.addEventListener('hero:ready', handleHeroReady)
+      window.addEventListener('hero:ready', handleHeroReady, { once: true })
+
+      // Safety net: if hero:ready never fires (unknown edge case, unmount race),
+      // initialize Lenis anyway after 10 seconds so the page is never permanently
+      // scroll-locked. This is intentionally longer than HeroAssetLoader's 8s
+      // timeout to give the normal pipeline time to complete first.
+      const LENIS_SAFETY_TIMEOUT_MS = 10000
+      safetyTimerId = setTimeout(() => {
+        window.removeEventListener('hero:ready', handleHeroReady)
+        initLenis()
+      }, LENIS_SAFETY_TIMEOUT_MS)
 
       return () => {
+        if (safetyTimerId) {
+          clearTimeout(safetyTimerId)
+        }
         window.removeEventListener('hero:ready', handleHeroReady)
         destroyLenis()
       }
