@@ -32,15 +32,15 @@ export default class HeroScrollController {
     const XFADE_DUR = XFADE_END - VIDEO_END
 
     // Reset initial states strictly before constructing timeline
-    gsap.set(this.tagline,       { opacity: 1, y: 0 })
+    gsap.set(this.tagline, { opacity: 1, y: 0 })
     gsap.set(this.taglineScroll, { opacity: 1, y: 0 })
-    gsap.set(this.video,         { scale: 1.0, y: 0, opacity: 1 })
-    gsap.set(this.heroImg,       { opacity: 0, scale: 1.05, filter: 'blur(6px)' })
+    gsap.set(this.video, { scale: 1.0, y: 0, opacity: 1 })
+    gsap.set(this.heroImg, { opacity: 0, scale: 1.05, filter: 'blur(6px)' })
 
-    gsap.set('.hero-eyebrow',    { opacity: 0, y: 20 })
-    gsap.set('.hero-word',       { y: '115%' }) // inside overflow:hidden mask
-    gsap.set('.hero-desc',       { opacity: 0, y: 20 })
-    gsap.set('.hero-cta-btn',    { opacity: 0, y: 20, scale: 0.92 })
+    gsap.set('.hero-eyebrow', { opacity: 0, y: 20 })
+    gsap.set('.hero-word', { y: '115%' }) // inside overflow:hidden mask
+    gsap.set('.hero-desc', { opacity: 0, y: 20 })
+    gsap.set('.hero-cta-btn', { opacity: 0, y: 20, scale: 0.92 })
     gsap.set('.hero-trust-item', { opacity: 0, y: 15 })
 
     // Build timeline completely once

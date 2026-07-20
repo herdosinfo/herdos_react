@@ -119,7 +119,7 @@ export default function Header() {
     // Remove all GSAP inline styles from any previous route to start clean
     gsap.set(header, { clearProps: 'all' })
 
-    const isHome = document.body.dataset.page === 'home'
+    const isHome = pathname === '/' || pathname === '/home/'
     let triggerInstance = null
     let heroReadyListener = null
 
