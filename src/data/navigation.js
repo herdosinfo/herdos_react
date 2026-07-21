@@ -69,29 +69,7 @@ export const NAV = [
       },
     ],
   },
-  {
-    id: 'technology',
-    label: 'Technology',
-    href: '/technology/',
-    cols: [
-      {
-        title: 'Platform',
-        items: [
-          ['/technology/#intelligence', 'HERDOS Intelligence', 'The decision-making engine.'],
-          ['/technology/#collar', 'Smart Collar', 'Solar, rugged, sensor-rich.'],
-          ['/technology/#app', 'Mobile Application', 'Your herd, in your pocket.'],
-        ],
-      },
-      {
-        title: 'Stack',
-        items: [
-          ['/technology/#connectivity', 'Connectivity', 'GNSS · NB-IoT · LoRa gateway.'],
-          ['/technology/#cloud', 'Cloud Platform', 'The data backbone.'],
-          ['/technology/#ip', 'Patent & IP', 'Patent-pending intelligence & collar.'],
-        ],
-      },
-    ],
-  },
+
   {
     id: 'resources',
     label: 'Resources',
@@ -120,6 +98,12 @@ export const NAV = [
           ['/contact/', 'Contact', 'Talk to our team in Bengaluru.'],
           ['/about/#careers', 'Careers', 'Build the future of Indian livestock.'],
           ['/about/#press', 'Press & Media', 'HERDOS in the news.'],
+        ],
+      },
+      {
+        title: 'Our Technology',
+        items: [
+          ['/technology/', 'Technology', 'The platform behind every collar.'],
         ],
       },
     ],
