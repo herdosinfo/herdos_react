@@ -81,6 +81,13 @@
   --maxw: 1440px;
   --nav-h: 64px;
   --gutter: clamp(1.25rem, 5vw, 4rem);
+  --mcta-h: 0px; /* mobile CTA bar height — 0 on desktop */
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --mcta-h: 72px; /* fixed mobile CTA bar (~56px bar + safe-area) */
+  }
 }
 
 @media (min-width: 1440px) {

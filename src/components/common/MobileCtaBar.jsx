@@ -6,8 +6,6 @@ export default function MobileCtaBar() {
 
   useEffect(() => {
     // Show once hero section has scrolled out of view
-    // The sentinel is placed at the bottom of the hero in HeroSection
-    // But here we use a simple scroll threshold as fallback
     const handleScroll = () => {
       setVisible(window.scrollY > window.innerHeight * 0.8)
     }
@@ -15,22 +13,24 @@ export default function MobileCtaBar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  if (!visible) return null
-
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-forest border-t border-white/10 p-4 flex gap-3">
-      <Link
-        to="/contact/"
-        className="btn btn--ghostw flex-1 text-center text-sm py-3"
-      >
-        Login
-      </Link>
-      <Link
-        to="/contact/"
-        className="btn btn--primary flex-1 text-center text-sm py-3"
-      >
-        Request Demo
-      </Link>
+    <div className={`mcta${visible ? ' show' : ''}`}>
+      <div style={{ display: 'flex', gap: '0.75rem' }}>
+        <Link
+          to="/contact/"
+          className="btn btn--ghostw"
+          style={{ flex: 1, textAlign: 'center', fontSize: '0.88rem', padding: '0.75rem 0' }}
+        >
+          Login
+        </Link>
+        <Link
+          to="/contact/"
+          className="btn btn--primary"
+          style={{ flex: 1, textAlign: 'center', fontSize: '0.88rem', padding: '0.75rem 0' }}
+        >
+          Request Demo
+        </Link>
+      </div>
     </div>
   )
 }
