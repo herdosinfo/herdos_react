@@ -32,6 +32,7 @@
   :root {
     --hero-pad:    16px;
     --hero-radius: 16px;
+    --nav-h:       54px;
   }
 }
 
@@ -86,7 +87,7 @@
 
 @media (max-width: 1023px) {
   :root {
-    --mcta-h: 72px; /* fixed mobile CTA bar (~56px bar + safe-area) */
+    --mcta-h: 0px;
   }
 }
 

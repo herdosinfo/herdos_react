@@ -529,16 +529,9 @@
 .finalcta h2 { color: #fff; }
 .finalcta p { color: rgba(245,245,245,0.82); font-size: 1.08rem; }
 .finalcta .hero-cta { justify-content: center; }
-.finalcta { background: var(--grad-hero); color: #fff; text-align: center; }
-.finalcta .container { display: flex; flex-direction: column; align-items: center; gap: 1.1rem; max-width: 680px; }
-.finalcta h2 { color: #fff; }
-.finalcta p { color: rgba(245,245,245,0.82); font-size: 1.08rem; }
-.finalcta .hero-cta { justify-content: center; }
 
-/* ---- Mobile sticky CTA bar ---- */
-.mcta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 900; padding: 0.7rem var(--gutter) calc(0.7rem + env(safe-area-inset-bottom)); background: rgba(13, 31, 18, 0.92); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.10); transform: translateY(120%); transition: transform var(--dur) var(--ease); }
-.mcta.show { transform: none; }
-@media (min-width: 1024px) { .mcta { display: none; } }
+/* ---- Mobile sticky CTA bar (Disabled) ---- */
+.mcta { display: none !important; }
 
 /* ============================================================
    RESPONSIVE — Compact-viewport & small-screen overrides
@@ -804,7 +797,38 @@
   }
 }
 
-/* ---- Final CTA: compact spacing ---- */
+/* ---- Final CTA: mobile hierarchy and compact spacing ---- */
+@media (max-width: 767px) {
+  .finalcta .container {
+    padding-block: clamp(3rem, 2.5rem + 3vw, 4.5rem);
+    gap: 1.25rem;
+  }
+  .finalcta .hero-cta {
+    flex-direction: column;
+    width: 100%;
+    max-width: 380px;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .finalcta .hero-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .finalcta .hero-cta .btn--ghostw {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.92rem;
+    padding: 0.4rem 1rem;
+    font-weight: 500;
+  }
+  .finalcta .hero-cta .btn--ghostw:hover {
+    color: #ffffff;
+    background: transparent;
+  }
+}
+
 @media (max-width: 480px) {
   .finalcta .container {
     gap: 0.85rem;

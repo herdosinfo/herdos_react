@@ -6,10 +6,10 @@ export default function FinalCTA({
   hasPill = true,
   headline = 'Bring HERDOS to your farm.',
   lead = 'Join pilot programs across India. Tell us about your herd and we\'ll set up a walkthrough within 48 hours.',
-  primaryLabel = 'Request a Pilot Demo',
+  primaryLabel = 'Request a Demo →',
   primaryTo = '/contact/',
   primaryBtnClass = 'btn--white',
-  secondaryLabel = 'Talk to Our Team',
+  secondaryLabel = 'Login',
   secondaryTo = '/contact/',
   hasSecondary = true,
 }) {
