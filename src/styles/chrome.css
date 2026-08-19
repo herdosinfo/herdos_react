@@ -217,7 +217,7 @@ body:not([data-page="home"]) .site-header:not(.scrolled) .nav-link::before {
 
 .logo-colour,
 .logo-white {
-  height: 26px;
+  height: 42px;
   width: auto;
   transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }

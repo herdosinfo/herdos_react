@@ -7,29 +7,42 @@ function inr(n) {
 }
 
 export default function ROICalculator({
-  type = 'goats', // 'goats' or 'sheep'
+  type = 'goats',         // 'goats' or 'sheep'
   minHerd = 10,
   maxHerd = 2000,
   defaultHerd = 100,
   stepHerd = 10,
+  defaultLabor = 12000,   // monthly labor cost per herder
+  defaultLoss = 8,        // annual loss rate %
 }) {
   const [herd, setHerd] = useState(defaultHerd)
-  const [labor, setLabor] = useState(12000)
-  const [loss, setLoss] = useState(8)
+  const [labor, setLabor] = useState(defaultLabor)
+  const [loss, setLoss] = useState(defaultLoss)
 
   const results = useMemo(() => {
     const H = Number(herd)
-    const L = Number(labor)
-    const R = Number(loss)
+    const L = Number(labor)   // monthly cost per herder
+    const R = Number(loss)    // annual loss rate %
+
+    // Annual labor saving: 50% reduction on one herder's yearly cost
     const laborSave = Math.round(L * 12 * 0.5)
+
+    // Annual animal-loss saving: animals × loss-rate × avg value (₹9000) × recovery rate (47%)
     const lossSave = Math.round(H * (R / 100) * 9000 * 0.47)
+
+    // Annual Herdos subscription cost: ₹1200 per animal per year
     const sub = Math.round(H * 1200)
-    const net = laborSave + lossSave - sub
-    const payback = net > 0 ? (sub / (net / 12)).toFixed(1).replace(/\.0$/, '') + ' months' : '—'
-    return {
-      net: Math.max(net, 0),
-      payback,
-    }
+
+    const grossBenefit = laborSave + lossSave
+    const net = grossBenefit - sub
+
+    const hasROI = net > 0
+    // Payback in months: subscription cost ÷ monthly net benefit
+    const payback = hasROI
+      ? (sub / (net / 12)).toFixed(1).replace(/\.0$/, '') + ' months'
+      : '—'
+
+    return { laborSave, lossSave, sub, grossBenefit, net, payback, hasROI }
   }, [herd, labor, loss])
 
   const labelHerd = type === 'goats' ? 'Number of goats' : 'Number of sheep'
@@ -46,7 +59,7 @@ export default function ROICalculator({
           <div className="roi-inputs">
             <div className="roi-group">
               <label htmlFor="roi-herd">
-                {labelHerd} <span id="roi-herd-v">{herd.toLocaleString()} animals</span>
+                {labelHerd} <span id="roi-herd-v">{Number(herd).toLocaleString()} animals</span>
               </label>
               <input
                 id="roi-herd"
@@ -76,7 +89,7 @@ export default function ROICalculator({
             </div>
             <div className="roi-group">
               <label htmlFor="roi-loss">
-                Annual loss rate <span id="roi-loss-v">{loss.toFixed(1)}%</span>
+                Annual loss rate <span id="roi-loss-v">{Number(loss).toFixed(1)}%</span>
               </label>
               <input
                 id="roi-loss"
@@ -94,13 +107,37 @@ export default function ROICalculator({
           <div className="roi-out">
             <span className="eyebrow">Estimated net annual benefit</span>
             <span className="roi-net" id="roi-net">
-              {inr(results.net)}
+              {inr(Math.abs(results.net))}
             </span>
-            <div className="roi-row">
-              <span>Payback period</span>
-              <strong id="roi-pay">{results.payback}</strong>
+
+            {/* Savings breakdown */}
+            <div className="roi-row" style={{ marginTop: '0.75rem' }}>
+              <span>Labor savings</span>
+              <strong>{inr(results.laborSave)}/yr</strong>
             </div>
-            <Link to="/contact/" className="btn btn--white" style={{ marginTop: '0.6rem' }}>
+            <div className="roi-row">
+              <span>Loss reduction</span>
+              <strong>{inr(results.lossSave)}/yr</strong>
+            </div>
+            <div className="roi-row" style={{ opacity: 0.65 }}>
+              <span>Subscription cost</span>
+              <strong>−{inr(results.sub)}/yr</strong>
+            </div>
+
+            <div className="roi-row" style={{ marginTop: '0.5rem', borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: '0.5rem' }}>
+              <span>Payback period</span>
+              <strong id="roi-pay">
+                {results.hasROI ? results.payback : 'No net benefit'}
+              </strong>
+            </div>
+
+            {!results.hasROI && (
+              <p style={{ fontSize: '0.78rem', opacity: 0.6, marginTop: '0.4rem', lineHeight: 1.4 }}>
+                Increase herd size or loss rate to see a positive return.
+              </p>
+            )}
+
+            <Link to="/contact/" className="btn btn--white" style={{ marginTop: '0.9rem' }}>
               Get a custom quote
             </Link>
           </div>
