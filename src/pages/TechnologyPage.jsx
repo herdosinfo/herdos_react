@@ -43,7 +43,7 @@ export default function TechnologyPage() {
         <div className="container">
           <Reveal className="split">
             <div className="split-media">
-              <img src="/media/collar-detail.png" alt="HERDOS Intelligence engine" />
+              <img src="/media/collar-detail.png" alt="HERDOS Intelligence engine" loading="lazy" decoding="async" />
             </div>
             <div className="split-text">
               <span className="pill pill--gold">
@@ -72,7 +72,7 @@ export default function TechnologyPage() {
         <div className="container">
           <Reveal className="split flip">
             <div className="split-media">
-              <img src="/media/collar-solar.png" alt="HERDOS smart collar" />
+              <img src="/media/collar-solar.png" alt="HERDOS smart collar" loading="lazy" decoding="async" />
             </div>
             <div className="split-text">
               <span className="pill pill--gold">
@@ -101,7 +101,7 @@ export default function TechnologyPage() {
         <div className="container">
           <Reveal className="split">
             <div className="split-media">
-              <img src="/media/app-dash.png" alt="HERDOS mobile app" />
+              <img src="/media/app-dash.png" alt="HERDOS mobile app" loading="lazy" decoding="async" />
             </div>
             <div className="split-text">
               <span className="eyebrow">Mobile Application</span>
@@ -160,7 +160,7 @@ export default function TechnologyPage() {
         <div className="container">
           <Reveal className="split">
             <div className="split-media">
-              <img src="/media/app-map.png" alt="HERDOS cloud platform" />
+              <img src="/media/app-map.png" alt="HERDOS cloud platform" loading="lazy" decoding="async" />
             </div>
             <div className="split-text">
               <span className="eyebrow">Cloud Platform</span>

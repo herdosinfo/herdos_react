@@ -103,7 +103,7 @@ export default function GoatsPage() {
         <div className="container">
           <Reveal className="split">
             <div className="split-media">
-              <img src="/media/goat.png" alt="Goat wearing HERDOS collar" />
+              <img src="/media/goat.png" alt="Goat wearing HERDOS collar" loading="lazy" decoding="async" />
             </div>
             <div className="split-text">
               <span className="eyebrow">Goat-specific features</span>

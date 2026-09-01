@@ -51,7 +51,7 @@ export default function AboutPage() {
               <p>HERDOS combines virtual fencing and early illness detection into one solar-powered collar, built specifically for small ruminants and the realities of Indian grazing land.</p>
             </div>
             <div className="split-media">
-              <img src="/media/field.jpg" alt="Indian grazing landscape" />
+              <img src="/media/field.jpg" alt="Indian grazing landscape" loading="lazy" decoding="async" />
             </div>
           </Reveal>
         </div>

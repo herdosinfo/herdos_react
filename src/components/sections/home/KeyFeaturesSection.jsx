@@ -20,7 +20,7 @@ export default function KeyFeaturesSection() {
         {/* Row 1 */}
         <Reveal className="kf-row">
           <div className="kf-media">
-            <img src="/media/fencing.png" alt="Drawing a virtual paddock in the HERDOS app" />
+            <img src="/media/fencing.png" alt="Drawing a virtual paddock in the HERDOS app" loading="lazy" decoding="async" />
           </div>
           <div className="kf-text">
             <span className="eyebrow">Virtual Fencing & Shifting</span>
@@ -43,7 +43,7 @@ export default function KeyFeaturesSection() {
         {/* Row 2 */}
         <Reveal className="kf-row reverse">
           <div className="kf-media">
-            <img src="/media/collar-detail.png" alt="HERDOS collar sensor detail" />
+            <img src="/media/collar-detail.png" alt="HERDOS collar sensor detail" loading="lazy" decoding="async" />
           </div>
           <div className="kf-text">
             <span className="eyebrow">Early Illness Detection</span>
@@ -66,7 +66,7 @@ export default function KeyFeaturesSection() {
         {/* Row 3 */}
         <Reveal className="kf-row">
           <div className="kf-media">
-            <img src="/media/app-dash.png" alt="HERDOS mobile app dashboard" />
+            <img src="/media/app-dash.png" alt="HERDOS mobile app dashboard" loading="lazy" decoding="async" />
           </div>
           <div className="kf-text">
             <span className="eyebrow">HERDOS Mobile App</span>
@@ -89,7 +89,7 @@ export default function KeyFeaturesSection() {
         {/* Row 4 */}
         <Reveal className="kf-row reverse">
           <div className="kf-media">
-            <img src="/media/connectivity.png" alt="HERDOS connectivity: GNSS, NB-IoT, LoRa gateway" />
+            <img src="/media/connectivity.png" alt="HERDOS collar: GNSS, NB-IoT, LoRa gateway" loading="lazy" decoding="async" />
           </div>
           <div className="kf-text">
             <span className="eyebrow">Connectivity Anywhere</span>

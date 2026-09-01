@@ -138,13 +138,16 @@ export default function HeroSection() {
             preload="auto"
             aria-hidden="true"
           />
-          {/* Hero image — initially invisible, crossfades in when video reaches final frame */}
+          {/* Hero image — initially invisible, crossfades in when video reaches final frame.
+              fetchpriority="high": signals to the browser this is a high-priority resource (LCP).
+              No loading="lazy" — this is the LCP image, must load immediately.              */}
           <img
             ref={heroImageRef}
             src={heroImage}
             className="hero-bg-image"
             alt=""
             aria-hidden="true"
+            fetchpriority="high"
           />
         </div>
 

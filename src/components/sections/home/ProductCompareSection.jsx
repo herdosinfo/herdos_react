@@ -27,7 +27,7 @@ export default function ProductCompareSection() {
           {/* Goats Card */}
           <Reveal className="cmp-card">
             <div className="cmp-photo">
-              <img src="/media/goat.png" alt="HERDOS for goats" />
+              <img src="/media/goat.png" alt="HERDOS for goats" loading="lazy" decoding="async" />
               <span className="pill pill--gold">
                 <span className="dot"></span> For Goats
               </span>
@@ -49,7 +49,7 @@ export default function ProductCompareSection() {
           {/* Sheep Card */}
           <Reveal className="cmp-card">
             <div className="cmp-photo">
-              <img src="/media/sheep.png" alt="HERDOS for sheep" />
+              <img src="/media/sheep.png" alt="HERDOS for sheep" loading="lazy" decoding="async" />
               <span className="pill pill--gold">
                 <span className="dot"></span> For Sheep
               </span>

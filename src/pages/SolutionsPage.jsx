@@ -37,7 +37,7 @@ export default function SolutionsPage() {
         <div className="container">
           <Reveal className="split">
             <div className="split-media">
-              <img src="/media/field.jpg" alt="Open grazing without constant supervision" />
+              <img src="/media/field.jpg" alt="Open grazing without constant supervision" loading="lazy" decoding="async" />
             </div>
             <div className="split-text">
               <span className="eyebrow">01 — Reduce herding cost</span>
@@ -61,7 +61,7 @@ export default function SolutionsPage() {
         <div className="container">
           <Reveal className="split flip">
             <div className="split-media">
-              <img src="/media/collar-detail.png" alt="Illness detection sensors" />
+              <img src="/media/collar-detail.png" alt="Illness detection sensors" loading="lazy" decoding="async" />
             </div>
             <div className="split-text">
               <span className="eyebrow">02 — Early illness detection</span>
@@ -85,7 +85,7 @@ export default function SolutionsPage() {
         <div className="container">
           <Reveal className="split">
             <div className="split-media">
-              <img src="/media/fencing.png" alt="Virtual fencing on a live map" />
+              <img src="/media/fencing.png" alt="Virtual fencing on a live map" loading="lazy" decoding="async" />
             </div>
             <div className="split-text">
               <span className="eyebrow">03 — Virtual fencing</span>
@@ -109,7 +109,7 @@ export default function SolutionsPage() {
         <div className="container">
           <Reveal className="split flip">
             <div className="split-media">
-              <img src="/media/field-square.jpg" alt="Livestock security and tracking" />
+              <img src="/media/field-square.jpg" alt="Livestock security and tracking" loading="lazy" decoding="async" />
             </div>
             <div className="split-text">
               <span className="eyebrow">04 — Livestock security</span>

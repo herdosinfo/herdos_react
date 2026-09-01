@@ -84,7 +84,7 @@ export default function TestimonialsSection() {
           >
             {TESTIMONIALS.map((t) => (
               <article key={t.id} className="tcard">
-                <img className="tcard-photo" src={t.photo} alt={t.photoAlt} />
+                <img className="tcard-photo" src={t.photo} alt={t.photoAlt} loading="lazy" decoding="async" />
                 <div className="tcard-stars">
                   {Array.from({ length: t.stars }).map((_, i) => (
                     <svg key={i} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

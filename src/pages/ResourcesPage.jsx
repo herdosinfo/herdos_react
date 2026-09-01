@@ -147,7 +147,7 @@ export default function ResourcesPage() {
               <Reveal key={post.id}>
                 <a href="#" className="bcard" onClick={(e) => e.preventDefault()}>
                   <div className="bcard-img">
-                    <img src={post.image} alt={post.alt} />
+                    <img src={post.image} alt={post.alt} loading="lazy" decoding="async" />
                   </div>
                   <div className="bcard-body">
                     <span className="bcard-cat">{post.subcat}</span>
@@ -183,7 +183,7 @@ export default function ResourcesPage() {
               </a>
             </div>
             <div className="split-media">
-              <img src="/media/hero-goat.png" alt="Goat wearing collar comfortably" />
+              <img src="/media/hero-goat.png" alt="Goat wearing collar comfortably" loading="lazy" decoding="async" />
             </div>
           </Reveal>
         </div>

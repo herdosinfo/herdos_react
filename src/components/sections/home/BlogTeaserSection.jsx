@@ -22,7 +22,7 @@ export default function BlogTeaserSection() {
           <Reveal>
             <Link to="/resources/#blog" className="bcard">
               <div className="bcard-img">
-                <img src="/media/collar-solar.png" alt="Solar collar article" />
+                <img src="/media/collar-solar.png" alt="Solar collar article" loading="lazy" decoding="async" />
               </div>
               <div className="bcard-body">
                 <span className="bcard-cat">Technology</span>
@@ -36,7 +36,7 @@ export default function BlogTeaserSection() {
           <Reveal>
             <Link to="/resources/#blog" className="bcard">
               <div className="bcard-img">
-                <img src="/media/app-map.png" alt="Virtual fencing article" />
+                <img src="/media/app-map.png" alt="Virtual fencing article" loading="lazy" decoding="async" />
               </div>
               <div className="bcard-body">
                 <span className="bcard-cat">Grazing Tips</span>
@@ -50,7 +50,7 @@ export default function BlogTeaserSection() {
           <Reveal>
             <Link to="/resources/#blog" className="bcard">
               <div className="bcard-img">
-                <img src="/media/collar-front.png" alt="Illness detection article" />
+                <img src="/media/collar-front.png" alt="Illness detection article" loading="lazy" decoding="async" />
               </div>
               <div className="bcard-body">
                 <span className="bcard-cat">Animal Health</span>

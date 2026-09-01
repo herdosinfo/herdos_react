@@ -111,7 +111,7 @@ export default function FarmersPage() {
               <Reveal key={story.id}>
                 <article className="bcard">
                   <div className="bcard-img">
-                    <img src={story.image} alt={story.alt} />
+                    <img src={story.image} alt={story.alt} loading="lazy" decoding="async" />
                   </div>
                   <div className="bcard-body">
                     <span className="bcard-cat">{story.subcat}</span>

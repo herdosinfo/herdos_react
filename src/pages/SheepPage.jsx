@@ -103,7 +103,7 @@ export default function SheepPage() {
         <div className="container">
           <Reveal className="split flip">
             <div className="split-media">
-              <img src="/media/herd.webp" alt="Sheep flock grazing" />
+              <img src="/media/herd.webp" alt="Sheep flock grazing" loading="lazy" decoding="async" />
             </div>
             <div className="split-text">
               <span className="eyebrow">Sheep-specific features</span>

@@ -1,6 +1,33 @@
+import { useRef, useEffect } from 'react'
 import Reveal from '../../common/Reveal'
 
 export default function HowItWorksSection() {
+  const videoRef = useRef(null)
+
+  // Defer loading the 3.6 MB video until it approaches the viewport.
+  // Without this, autoPlay + src causes the browser to immediately buffer
+  // the entire file even though the section is far below the fold.
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !video.src) {
+            // Assign src only once — when the section is within 200px of view
+            video.src = '/media/goat-wearing-herdos.mp4'
+            observer.disconnect()
+          }
+        })
+      },
+      { rootMargin: '200px' } // start loading 200px before it enters the viewport
+    )
+
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <section className="section" id="how">
       <div className="container">
@@ -28,7 +55,18 @@ export default function HowItWorksSection() {
         </div>
 
         <Reveal className="proc-video">
-          <video src="/media/goat-wearing-herdos.mp4" autoPlay loop muted playsInline preload="none"></video>
+          {/* src is assigned by IntersectionObserver — defers 3.6 MB until near-viewport.
+              poster shows a still frame (herd.webp, 146 KB) while video loads.
+              preload="none" prevents any buffering before src is set.             */}
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+            poster="/media/herd.webp"
+          />
           <div className="vcap">
             <h5><span className="live"></span> Live field feedback loop</h5>
             <p>The HERDOS collar in action — a lightweight, solar-harvesting harness delivering boundary cues and vitals telemetry.</p>
@@ -38,3 +76,4 @@ export default function HowItWorksSection() {
     </section>
   )
 }
+
